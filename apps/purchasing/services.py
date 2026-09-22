@@ -29,8 +29,28 @@ RECEIVABLE = {
 
 
 def notify_purchase_event(order_id, event):
-    """Called after commit. Later notification code can use this without joining the stock transaction."""
-    return None
+    """Called after commit so the stock transaction is not tied to notification delivery."""
+    from apps.notifications.models import Notification
+    from apps.notifications.services import notify_document
+
+    categories = {
+        "submitted": Notification.Category.PO_SUBMITTED,
+        "approved": Notification.Category.PO_APPROVED,
+        "received": Notification.Category.PO_RECEIVED,
+    }
+    category = categories.get(event)
+    if category is None:
+        return
+    order = PurchaseOrder.objects.select_related("warehouse").get(pk=order_id)
+    verb = {"submitted": "was submitted", "approved": "was approved", "received": "was received"}[event]
+    notify_document(
+        warehouses=[order.warehouse],
+        category=category,
+        title=f"{order.number} {verb}",
+        body=f"Purchase order {order.number} {verb}.",
+        entity_type="purchasing.PurchaseOrder",
+        entity_id=order.pk,
+    )
 
 
 def create_purchase_order(*, supplier, warehouse, items, user, notes="", request=None):

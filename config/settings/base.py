@@ -3,6 +3,7 @@
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "django_filters",
     "drf_spectacular",
+    "django_celery_beat",
     "apps.common",
     "apps.accounts",
     "apps.audit",
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "apps.inventory",
     "apps.purchasing",
     "apps.sales",
+    "apps.notifications",
 ]
 
 MIDDLEWARE = [
@@ -152,4 +155,23 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Inventory Management API",
     "DESCRIPTION": "API for the inventory and warehouse management system.",
     "VERSION": "1.0.0",
+}
+
+REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379/1")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL)
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULE = {
+    "scan-low-stock-hourly": {
+        "task": "apps.notifications.tasks.scan_low_stock",
+        "schedule": crontab(minute=0),
+    },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+    }
 }

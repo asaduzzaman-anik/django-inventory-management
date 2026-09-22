@@ -74,6 +74,14 @@ feat: add sales orders, reservations, and returns
 Reserve stock on confirm, deduct it on complete, and restock returns without selling more than is available.
 ```
 
+Suggested commit when Phase 10 is committed:
+
+```text
+feat: add notifications and Celery tasks
+
+Notify managers after stock documents commit, and scan low stock hourly without blocking the stock write.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -202,17 +210,17 @@ Reserve stock on confirm, deduct it on complete, and restock returns without sel
 
 ## Phase 10 — Notifications and background jobs
 
-- [ ] Add Redis, Celery, django-celery-beat, and django-redis to requirements and settings
-- [ ] Add `config/celery.py` and load it from the app config
-- [ ] Create `Notification` and `StockAlertState`
-- [ ] Create in-app notifications after successful PO submit, approve, receive, transfer, and adjustment
-- [ ] Enqueue `evaluate_stock_alert` after commit of balance changes
-- [ ] Send email from a Celery task using the console backend locally
-- [ ] Add the hourly low-stock scan
-- [ ] Suppress duplicate alerts until stock recovers
-- [ ] Add notification list, mark-read, and mark-all-read for the current user only
-- [ ] Prove a broker failure does not roll back a receipt
-- [ ] Document the worker and beat commands
+- [x] Add Redis, Celery, django-celery-beat, and django-redis to requirements and settings
+- [x] Add `config/celery.py` and load it from the app config
+- [x] Create `Notification` and `StockAlertState`
+- [x] Create in-app notifications after successful PO submit, approve, receive, transfer, and adjustment
+- [x] Enqueue `evaluate_stock_alert` after commit of balance changes
+- [x] Send email from a Celery task using the console backend locally
+- [x] Add the hourly low-stock scan
+- [x] Suppress duplicate alerts until stock recovers
+- [x] Add notification list, mark-read, and mark-all-read for the current user only
+- [x] Prove a broker failure does not roll back a receipt
+- [x] Document the worker and beat commands
 
 ## Phase 11 — Reports and dashboard
 

@@ -168,6 +168,7 @@ def _post_receipt(*, warehouse, items, user, note, idempotency_key, request):
         },
         request=request,
     )
+    _schedule_alerts([(item["product"].pk, warehouse.pk) for item in ordered_items])
     return _receipt_with_lines(receipt.pk)
 
 
@@ -373,6 +374,11 @@ def _post_transfer(*, source, destination, items, user, note, idempotency_key, r
         },
         request=request,
     )
+    _schedule_alerts(
+        [(item["product"].pk, source.pk) for item in ordered_items]
+        + [(item["product"].pk, destination.pk) for item in ordered_items]
+    )
+    _schedule_document_notification("transfer", document.pk)
     return _transfer_queryset().get(pk=document.pk)
 
 
@@ -442,6 +448,8 @@ def _post_adjustment(*, warehouse, product, quantity_change, reason, user, note,
         },
         request=request,
     )
+    _schedule_alerts([(product.pk, warehouse.pk)])
+    _schedule_document_notification("adjustment", document.pk)
     return _adjustment_queryset().get(pk=document.pk)
 
 
@@ -528,6 +536,7 @@ def post_stock_increase(
                 created_by=user,
             )
         )
+    _schedule_alerts([(item["product"].pk, warehouse.pk) for item in ordered])
     return movements
 
 
@@ -543,6 +552,7 @@ def reserve_stock(*, warehouse, lines):
         stock = locked[(item["product"].pk, warehouse.pk)]
         stock.reserved = stock.reserved + item["quantity"]
         stock.save(update_fields=["reserved", "updated_at"])
+    _schedule_alerts([(item["product"].pk, warehouse.pk) for item in ordered])
 
 
 def release_reservation(*, warehouse, lines):
@@ -555,6 +565,7 @@ def release_reservation(*, warehouse, lines):
             raise BusinessRuleError(f"Reserved stock for {item['product'].sku} is missing.")
         stock.reserved = stock.reserved - item["quantity"]
         stock.save(update_fields=["reserved", "updated_at"])
+    _schedule_alerts([(item["product"].pk, warehouse.pk) for item in ordered])
 
 
 def post_sale(*, warehouse, lines, user, reference_type, reference_id, reference_code, note=""):
@@ -585,7 +596,26 @@ def post_sale(*, warehouse, lines, user, reference_type, reference_id, reference
                 created_by=user,
             )
         )
+    _schedule_alerts([(item["product"].pk, warehouse.pk) for item in ordered])
     return movements
+
+
+def _schedule_alerts(pairs):
+    from apps.notifications.services import enqueue_stock_alerts
+
+    enqueue_stock_alerts(pairs)
+
+
+def _schedule_document_notification(kind, document_id):
+    def _send(kind=kind, document_id=document_id):
+        from apps.notifications.services import notify_adjustment, notify_transfer
+
+        if kind == "transfer":
+            notify_transfer(document_id)
+        else:
+            notify_adjustment(document_id)
+
+    transaction.on_commit(_send)
 
 
 def _locked_stock(warehouse, products):
