@@ -115,7 +115,11 @@ def test_me_returns_and_updates_profile(client, user):
 
     profile = client.get("/api/v1/auth/me/")
     assert profile.status_code == 200
-    assert "password" not in profile.json()
+    body = profile.json()
+    assert "password" not in body
+    assert body["role"] is None
+    assert body["permissions"] == []
+    assert body["is_superuser"] is False
 
     updated = client.patch(
         "/api/v1/auth/me/",

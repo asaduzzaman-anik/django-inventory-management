@@ -90,6 +90,14 @@ feat: add reports and dashboard API
 Expose scoped inventory, purchasing, and sales reports, and cache the dashboard until stock changes.
 ```
 
+Suggested commit when Phase 12 is committed:
+
+```text
+feat: scaffold React app and authentication UI
+
+Add a Vite shell that logs in, restores the session, and logs out, and allow that origin through CORS.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -244,15 +252,15 @@ Expose scoped inventory, purchasing, and sales reports, and cache the dashboard 
 
 ## Phase 12 — Frontend foundation and auth
 
-- [ ] Scaffold Vite, React, TypeScript, Tailwind, React Router, TanStack Query, Axios, Zod, and React Hook Form
-- [ ] Add the axios client with bearer access token and single refresh retry
-- [ ] Store the refresh token in localStorage and the access token in memory
-- [ ] Build login, profile, change password, auth layout, and app layout
-- [ ] Add protected routes, access-denied, and not-found
-- [ ] Add sidebar and header with logout
-- [ ] Enable CORS for the Vite origin
-- [ ] Add a loading state and an API error toast
-- [ ] Test logged-out redirect and login validation
+- [x] Scaffold Vite, React, TypeScript, Tailwind, React Router, TanStack Query, Axios, Zod, and React Hook Form
+- [x] Add the axios client with bearer access token and single refresh retry
+- [x] Store the refresh token in localStorage and the access token in memory
+- [x] Build login, profile, change password, auth layout, and app layout
+- [x] Add protected routes, access-denied, and not-found
+- [x] Add sidebar and header with logout
+- [x] Enable CORS for the Vite origin
+- [x] Add a loading state and an API error toast
+- [x] Test logged-out redirect and login validation
 - [ ] Manually verify login, reload, and logout
 
 ## Phase 13 — Frontend master data

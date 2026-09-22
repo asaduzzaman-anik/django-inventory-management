@@ -9,7 +9,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from apps.accounts.serializers import ChangePasswordSerializer, LoginSerializer, UserSerializer
+from apps.accounts.serializers import ChangePasswordSerializer, LoginSerializer, MeSerializer
 from apps.audit.models import AuditLog
 from apps.audit.services import log_audit
 
@@ -70,7 +70,7 @@ class LogoutView(APIView):
 
 
 class MeView(RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = MeSerializer
     http_method_names = ["get", "patch", "head", "options"]
 
     def get_object(self):

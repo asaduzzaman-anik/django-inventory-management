@@ -14,6 +14,21 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "username"]
 
 
+class MeSerializer(UserSerializer):
+    role = serializers.SerializerMethodField()
+    permissions = serializers.SerializerMethodField()
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ["is_superuser", "role", "permissions"]
+        read_only_fields = UserSerializer.Meta.read_only_fields + ["is_superuser", "role", "permissions"]
+
+    def get_role(self, obj):
+        return role_name(obj)
+
+    def get_permissions(self, obj):
+        return sorted(obj.get_all_permissions())
+
+
 class LoginSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
