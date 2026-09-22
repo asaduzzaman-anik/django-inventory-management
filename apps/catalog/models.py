@@ -45,6 +45,13 @@ class Product(TimeStampedModel):
     name = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="products")
+    preferred_supplier = models.ForeignKey(
+        "suppliers.Supplier",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="products",
+    )
     cost_price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     selling_price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     reorder_level = models.DecimalField(

@@ -61,6 +61,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source="category.name", read_only=True)
+    preferred_supplier_name = serializers.SerializerMethodField()
     barcode = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     class Meta:
@@ -73,6 +74,8 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "category",
             "category_name",
+            "preferred_supplier",
+            "preferred_supplier_name",
             "cost_price",
             "selling_price",
             "reorder_level",
@@ -82,7 +85,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "category_name", "created_at", "updated_at"]
+        read_only_fields = ["id", "category_name", "preferred_supplier_name", "created_at", "updated_at"]
 
     def validate_sku(self, value):
         return value.strip().upper()
@@ -97,6 +100,19 @@ class ProductSerializer(serializers.ModelSerializer):
         if not category.is_active and category.pk != current_id:
             raise serializers.ValidationError("Choose an active category.")
         return category
+
+    def get_preferred_supplier_name(self, obj):
+        if obj.preferred_supplier_id is None:
+            return None
+        return obj.preferred_supplier.name
+
+    def validate_preferred_supplier(self, supplier):
+        if supplier is None:
+            return supplier
+        current_id = getattr(self.instance, "preferred_supplier_id", None)
+        if not supplier.is_active and supplier.pk != current_id:
+            raise serializers.ValidationError("Choose an active supplier.")
+        return supplier
 
     def validate_image(self, image):
         if image in (None, ""):

@@ -16,6 +16,12 @@ ROLE_PERMISSIONS = {
         "catalog.view_product",
         "catalog.add_product",
         "catalog.change_product",
+        "suppliers.view_supplier",
+        "suppliers.add_supplier",
+        "suppliers.change_supplier",
+        "warehouses.view_warehouse",
+        "warehouses.add_warehouse",
+        "warehouses.change_warehouse",
     ),
     "Warehouse Manager": (
         "catalog.view_category",
@@ -24,18 +30,28 @@ ROLE_PERMISSIONS = {
         "catalog.view_product",
         "catalog.add_product",
         "catalog.change_product",
+        "suppliers.view_supplier",
+        "suppliers.add_supplier",
+        "suppliers.change_supplier",
+        "warehouses.view_warehouse",
     ),
     "Inventory Staff": (
         "catalog.view_category",
         "catalog.view_product",
+        "suppliers.view_supplier",
+        "warehouses.view_warehouse",
     ),
     "Sales Staff": (
         "catalog.view_category",
         "catalog.view_product",
+        "suppliers.view_supplier",
+        "warehouses.view_warehouse",
     ),
     "Viewer": (
         "catalog.view_category",
         "catalog.view_product",
+        "suppliers.view_supplier",
+        "warehouses.view_warehouse",
     ),
 }
 

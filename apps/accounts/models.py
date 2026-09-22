@@ -15,3 +15,24 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class UserWarehouse(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="warehouse_assignments",
+    )
+    warehouse = models.ForeignKey(
+        "warehouses.Warehouse",
+        on_delete=models.PROTECT,
+        related_name="assignments",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "warehouse"], name="unique_user_warehouse"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} @ {self.warehouse}"

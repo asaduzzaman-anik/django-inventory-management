@@ -34,6 +34,14 @@ feat: add categories and products
 Add the catalog API with nested categories, product images, and role-based write access.
 ```
 
+Suggested commit when Phase 5 is committed:
+
+```text
+feat: add suppliers, warehouses, and warehouse assignments
+
+Limit each user to assigned warehouses and let products record a preferred supplier.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -93,15 +101,15 @@ Add the catalog API with nested categories, product images, and role-based write
 
 ## Phase 5 — Suppliers, warehouses, and scope
 
-- [ ] Create `Supplier` and `Warehouse` with unique codes and active flags
-- [ ] Add optional `preferred_supplier` on product
-- [ ] Create `UserWarehouse`
-- [ ] Add replace-assignments endpoint
-- [ ] Implement `visible_warehouses(user)` with superuser bypass and fail-closed default
-- [ ] Add supplier and warehouse endpoints
-- [ ] Audit writes and assignment changes
-- [ ] Grant permissions in `seed_roles`
-- [ ] Test unique codes, assignment replace, and empty visibility for a user with no warehouses
+- [x] Create `Supplier` and `Warehouse` with unique codes and active flags
+- [x] Add optional `preferred_supplier` on product
+- [x] Create `UserWarehouse`
+- [x] Add replace-assignments endpoint
+- [x] Implement `visible_warehouses(user)` with superuser bypass and fail-closed default
+- [x] Add supplier and warehouse endpoints
+- [x] Audit writes and assignment changes
+- [x] Grant permissions in `seed_roles`
+- [x] Test unique codes, assignment replace, and empty visibility for a user with no warehouses
 
 ## Phase 6 — Inventory core and receiving
 

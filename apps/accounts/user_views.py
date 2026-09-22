@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
@@ -7,12 +8,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.accounts.filters import UserFilter
-from apps.accounts.models import User
+from apps.accounts.models import User, UserWarehouse
 from apps.accounts.roles import ROLE_NAMES, role_name
 from apps.accounts.serializers import UserAdminSerializer, UserCreateSerializer, UserUpdateSerializer
 from apps.audit.models import AuditLog
 from apps.audit.services import log_audit
 from apps.common.permissions import CanManageUsers
+from apps.warehouses.models import Warehouse
 
 PROFILE_FIELDS = ("email", "first_name", "last_name", "phone", "is_active")
 
@@ -97,6 +99,54 @@ class UserRoleView(APIView):
             request=request,
         )
         return Response(UserAdminSerializer(user).data)
+
+
+class UserWarehouseView(APIView):
+    permission_classes = [CanManageUsers]
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        return Response({"warehouses": _warehouse_rows(user)})
+
+    def put(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        raw_ids = request.data.get("warehouses")
+        if not isinstance(raw_ids, list):
+            raise ValidationError({"warehouses": ["Provide a list of warehouse ids."]})
+        try:
+            warehouse_ids = [int(value) for value in raw_ids]
+        except (TypeError, ValueError) as exc:
+            raise ValidationError({"warehouses": ["Warehouse ids must be integers."]}) from exc
+
+        unique_ids = list(dict.fromkeys(warehouse_ids))
+        warehouses = list(Warehouse.objects.filter(pk__in=unique_ids))
+        if len(warehouses) != len(unique_ids):
+            raise ValidationError({"warehouses": ["One or more warehouses do not exist."]})
+
+        previous = sorted(
+            UserWarehouse.objects.filter(user=user).values_list("warehouse_id", flat=True)
+        )
+        with transaction.atomic():
+            UserWarehouse.objects.filter(user=user).delete()
+            UserWarehouse.objects.bulk_create(
+                [UserWarehouse(user=user, warehouse=warehouse) for warehouse in warehouses]
+            )
+        log_audit(
+            user=request.user,
+            action=AuditLog.Action.UPDATE,
+            instance=user,
+            metadata={"previous": previous, "current": sorted(unique_ids)},
+            request=request,
+        )
+        return Response({"warehouses": _warehouse_rows(user)})
+
+
+def _warehouse_rows(user):
+    assignments = UserWarehouse.objects.filter(user=user).select_related("warehouse").order_by("warehouse__code")
+    return [
+        {"id": row.warehouse_id, "code": row.warehouse.code, "name": row.warehouse.name}
+        for row in assignments
+    ]
 
 
 def _profile_snapshot(user):

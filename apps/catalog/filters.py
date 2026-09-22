@@ -10,6 +10,8 @@ class CategoryFilter(django_filters.FilterSet):
 
 
 class ProductFilter(django_filters.FilterSet):
+    supplier = django_filters.NumberFilter(field_name="preferred_supplier_id")
+
     class Meta:
         model = Product
-        fields = ["category", "is_active"]
+        fields = ["category", "is_active", "supplier"]
