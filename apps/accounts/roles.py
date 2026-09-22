@@ -42,6 +42,8 @@ ROLE_PERMISSIONS = {
         "sales.confirm_salesorder",
         "sales.complete_salesorder",
         "sales.cancel_salesorder",
+        "reports.view_reports",
+        "reports.export_reports",
     ),
     "Warehouse Manager": (
         "catalog.view_category",
@@ -69,6 +71,8 @@ ROLE_PERMISSIONS = {
         "purchasing.approve_purchaseorder",
         "purchasing.receive_purchaseorder",
         "sales.view_salesorder",
+        "reports.view_reports",
+        "reports.export_reports",
     ),
     "Inventory Staff": (
         "catalog.view_category",
@@ -83,6 +87,7 @@ ROLE_PERMISSIONS = {
         "inventory.receive_stock",
         "purchasing.view_purchaseorder",
         "purchasing.receive_purchaseorder",
+        "reports.view_reports",
     ),
     "Sales Staff": (
         "catalog.view_category",
@@ -101,6 +106,7 @@ ROLE_PERMISSIONS = {
         "sales.confirm_salesorder",
         "sales.complete_salesorder",
         "sales.cancel_salesorder",
+        "reports.view_reports",
     ),
     "Viewer": (
         "catalog.view_category",
@@ -114,6 +120,7 @@ ROLE_PERMISSIONS = {
         "inventory.view_stockadjustment",
         "purchasing.view_purchaseorder",
         "sales.view_salesorder",
+        "reports.view_reports",
     ),
 }
 

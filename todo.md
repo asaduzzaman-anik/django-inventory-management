@@ -82,6 +82,14 @@ feat: add notifications and Celery tasks
 Notify managers after stock documents commit, and scan low stock hourly without blocking the stock write.
 ```
 
+Suggested commit when Phase 11 is committed:
+
+```text
+feat: add reports and dashboard API
+
+Expose scoped inventory, purchasing, and sales reports, and cache the dashboard until stock changes.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -224,15 +232,15 @@ Notify managers after stock documents commit, and scan low stock hourly without 
 
 ## Phase 11 — Reports and dashboard
 
-- [ ] Add report permissions to `seed_roles`
-- [ ] Implement dashboard aggregates, including 30-day sales, purchases, movement, and value by warehouse
-- [ ] Cache the dashboard payload in Redis for 60 seconds and invalidate it when stock changes
-- [ ] Implement inventory, low-stock, movement, purchase, sales, warehouse, and product-performance reports
-- [ ] Require a date range up to 366 days on movement, purchase, and sales reports
-- [ ] Add CSV and xlsx export behind `export_reports`
-- [ ] Audit exports
-- [ ] Schedule the weekly movement report email for Super Admins
-- [ ] Test aggregates against a fixed fixture and test export permission denial
+- [x] Add report permissions to `seed_roles`
+- [x] Implement dashboard aggregates, including 30-day sales, purchases, movement, and value by warehouse
+- [x] Cache the dashboard payload in Redis for 60 seconds and invalidate it when stock changes
+- [x] Implement inventory, low-stock, movement, purchase, sales, warehouse, and product-performance reports
+- [x] Require a date range up to 366 days on movement, purchase, and sales reports
+- [x] Add CSV and xlsx export behind `export_reports`
+- [x] Audit exports
+- [x] Schedule the weekly movement report email for Super Admins
+- [x] Test aggregates against a fixed fixture and test export permission denial
 
 ## Phase 12 — Frontend foundation and auth
 

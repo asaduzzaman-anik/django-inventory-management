@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.purchasing",
     "apps.sales",
     "apps.notifications",
+    "apps.reports",
 ]
 
 MIDDLEWARE = [
@@ -165,6 +166,10 @@ CELERY_BEAT_SCHEDULE = {
     "scan-low-stock-hourly": {
         "task": "apps.notifications.tasks.scan_low_stock",
         "schedule": crontab(minute=0),
+    },
+    "weekly-movement-report": {
+        "task": "apps.reports.tasks.generate_scheduled_movement_report",
+        "schedule": crontab(minute=0, hour=6, day_of_week=1),
     },
 }
 

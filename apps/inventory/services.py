@@ -602,8 +602,10 @@ def post_sale(*, warehouse, lines, user, reference_type, reference_id, reference
 
 def _schedule_alerts(pairs):
     from apps.notifications.services import enqueue_stock_alerts
+    from apps.reports.services import invalidate_dashboard_cache
 
     enqueue_stock_alerts(pairs)
+    transaction.on_commit(invalidate_dashboard_cache)
 
 
 def _schedule_document_notification(kind, document_id):
