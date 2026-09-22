@@ -488,3 +488,44 @@ def _transfer_queryset():
 
 def _adjustment_queryset():
     return StockAdjustment.objects.select_related("warehouse", "product", "created_by", "transaction")
+
+
+def allocate_number(prefix):
+    return _next_number(prefix)
+
+
+def post_stock_increase(
+    *,
+    warehouse,
+    lines,
+    user,
+    transaction_type,
+    reference_type,
+    reference_id,
+    reference_code,
+    note="",
+):
+    """Increase on-hand and write ledger rows. Caller must already be inside transaction.atomic()."""
+    ordered = sorted(lines, key=lambda item: item["product"].pk)
+    locked = _lock_stock_rows([(item["product"], warehouse) for item in ordered])
+    movements = []
+    for item in ordered:
+        stock = locked[(item["product"].pk, warehouse.pk)]
+        stock.on_hand = stock.on_hand + item["quantity"]
+        stock.save(update_fields=["on_hand", "updated_at"])
+        movements.append(
+            InventoryTransaction.objects.create(
+                product=item["product"],
+                warehouse=warehouse,
+                transaction_type=transaction_type,
+                quantity_change=item["quantity"],
+                balance_after=stock.on_hand,
+                unit_cost=item.get("unit_cost"),
+                reference_type=reference_type,
+                reference_id=reference_id,
+                reference_code=reference_code,
+                note=(note or "")[:255],
+                created_by=user,
+            )
+        )
+    return movements

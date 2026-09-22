@@ -58,6 +58,14 @@ feat: add stock transfers and adjustments
 Move available stock between warehouses and correct balances without dropping on-hand below reserved.
 ```
 
+Suggested commit when Phase 8 is committed:
+
+```text
+feat: add purchase orders and receiving
+
+Receive approved purchase orders into stock through the ledger, including partial receipts.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -155,18 +163,18 @@ Move available stock between warehouses and correct balances without dropping on
 
 ## Phase 8 — Purchase orders
 
-- [ ] Create PO, PO line, purchase receipt, and receipt line models
-- [ ] Store line totals and header total
-- [ ] Allow edits only in `DRAFT`
-- [ ] Implement submit, approve, and cancel rules
-- [ ] Implement receive: cap at remaining, update `quantity_received`, post `PURCHASE`, set partial or received status
-- [ ] Keep the whole receive in one database transaction
-- [ ] Record receiving history as receipt documents
-- [ ] Add list filters by status, supplier, warehouse, and date
-- [ ] Grant submit and approve to Super Admin and Warehouse Manager; grant receive also to Inventory Staff
-- [ ] Audit status changes and receives
-- [ ] Leave a single service function other apps can call after commit for later notifications
-- [ ] Test illegal transitions, over-receive, partial then complete, and failed receive leaving stock unchanged
+- [x] Create PO, PO line, purchase receipt, and receipt line models
+- [x] Store line totals and header total
+- [x] Allow edits only in `DRAFT`
+- [x] Implement submit, approve, and cancel rules
+- [x] Implement receive: cap at remaining, update `quantity_received`, post `PURCHASE`, set partial or received status
+- [x] Keep the whole receive in one database transaction
+- [x] Record receiving history as receipt documents
+- [x] Add list filters by status, supplier, warehouse, and date
+- [x] Grant submit and approve to Super Admin and Warehouse Manager; grant receive also to Inventory Staff
+- [x] Audit status changes and receives
+- [x] Leave a single service function other apps can call after commit for later notifications
+- [x] Test illegal transitions, over-receive, partial then complete, and failed receive leaving stock unchanged
 
 ## Phase 9 — Sales and returns
 
