@@ -18,6 +18,14 @@ feat: add JWT authentication
 Add login, rotating refresh tokens, logout blacklist, profile, and password change, with OpenAPI docs.
 ```
 
+Suggested commit when Phase 3 is committed:
+
+```text
+feat: add roles, user administration, and audit logging
+
+Seed the five roles, manage users through the API, and record login, logout, and user changes.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -51,16 +59,16 @@ Add login, rotating refresh tokens, logout blacklist, profile, and password chan
 
 ## Phase 3 — Roles, users, and audit
 
-- [ ] Add custom permissions `accounts.manage_users` and `audit.view_auditlog`
-- [ ] Write idempotent `seed_roles` for Super Admin, Warehouse Manager, Inventory Staff, Sales Staff, and Viewer
-- [ ] Attach the Phase 3 permissions; leave later permissions for their phases and re-run the same command
-- [ ] Put every superuser in Super Admin during seed
-- [ ] Build user list, create, update, deactivate, and replace-role endpoints
-- [ ] Create `AuditLog` and `log_audit`
-- [ ] Record login success, login failure, and logout without storing passwords
-- [ ] Record user and role changes
-- [ ] Add `GET /api/v1/audit-logs/` for Super Admin
-- [ ] Test 403 for a non-admin and idempotent seed
+- [x] Add custom permissions `accounts.manage_users` and `audit.view_auditlog`
+- [x] Write idempotent `seed_roles` for Super Admin, Warehouse Manager, Inventory Staff, Sales Staff, and Viewer
+- [x] Attach the Phase 3 permissions; leave later permissions for their phases and re-run the same command
+- [x] Put every superuser in Super Admin during seed
+- [x] Build user list, create, update, deactivate, and replace-role endpoints
+- [x] Create `AuditLog` and `log_audit`
+- [x] Record login success, login failure, and logout without storing passwords
+- [x] Record user and role changes
+- [x] Add `GET /api/v1/audit-logs/` for Super Admin
+- [x] Test 403 for a non-admin and idempotent seed
 
 ## Phase 4 — Catalog
 

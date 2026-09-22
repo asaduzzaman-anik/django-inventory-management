@@ -10,6 +10,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from apps.accounts.serializers import ChangePasswordSerializer, LoginSerializer, UserSerializer
+from apps.audit.models import AuditLog
+from apps.audit.services import log_audit
 
 
 class LoginView(TokenObtainPairView):
@@ -17,6 +19,32 @@ class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
     throttle_classes = [AnonRateThrottle, ScopedRateThrottle]
     throttle_scope = "login"
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        username = request.data.get("username", "")
+        if not isinstance(username, str):
+            username = ""
+        try:
+            serializer.is_valid(raise_exception=True)
+        except AuthenticationFailed:
+            log_audit(
+                user=None,
+                action=AuditLog.Action.LOGIN,
+                entity_type="accounts.User",
+                entity_repr=username[:255],
+                metadata={"username": username[:150], "success": False},
+                request=request,
+            )
+            raise
+        log_audit(
+            user=serializer.user,
+            action=AuditLog.Action.LOGIN,
+            instance=serializer.user,
+            metadata={"username": serializer.user.username, "success": True},
+            request=request,
+        )
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class RefreshView(TokenRefreshView):
@@ -32,6 +60,12 @@ class LogoutView(APIView):
             RefreshToken(refresh).blacklist()
         except TokenError as exc:
             raise AuthenticationFailed("Token is invalid or expired.") from exc
+        log_audit(
+            user=request.user,
+            action=AuditLog.Action.LOGOUT,
+            instance=request.user,
+            request=request,
+        )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
