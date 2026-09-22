@@ -22,10 +22,15 @@ def api_exception_handler(exc, context):
     detail = "Request failed."
 
     if isinstance(data, dict):
-        if set(data.keys()) == {"detail"}:
+        field_errors = {
+            key: value
+            for key, value in data.items()
+            if key not in {"detail", "code"}
+        }
+        if "detail" in data and not field_errors:
             detail = str(data["detail"])
         else:
-            errors = data
+            errors = field_errors or data
             detail = "Validation failed."
     elif isinstance(data, list) and data:
         detail = str(data[0])
@@ -49,4 +54,6 @@ def _error_code(status_code):
         return "not_found"
     if status_code == 409:
         return "conflict"
+    if status_code == 429:
+        return "throttled"
     return "error"
