@@ -66,6 +66,14 @@ feat: add purchase orders and receiving
 Receive approved purchase orders into stock through the ledger, including partial receipts.
 ```
 
+Suggested commit when Phase 9 is committed:
+
+```text
+feat: add sales orders, reservations, and returns
+
+Reserve stock on confirm, deduct it on complete, and restock returns without selling more than is available.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -178,19 +186,19 @@ Receive approved purchase orders into stock through the ledger, including partia
 
 ## Phase 9 — Sales and returns
 
-- [ ] Create sales order, line, return, and return line models
-- [ ] Snapshot unit price and store subtotal, tax, and total
-- [ ] Edit lines only in `DRAFT`
-- [ ] Confirm: lock lines in product order and increase `reserved` or fail the whole order
-- [ ] Process: status only
-- [ ] Complete: decrease `on_hand` and `reserved`, write `SALE`
-- [ ] Cancel: release reservation when one exists; reject when completed
-- [ ] Return: only completed orders, cannot exceed remaining quantity, write `RETURN`
-- [ ] Payment status patch independent of stock
-- [ ] Enforce warehouse scope and available stock
-- [ ] Grant sales action permissions to Super Admin and Sales Staff
-- [ ] Audit status changes and returns
-- [ ] Test oversell, reservation conflict, complete, cancel, immutability, return cap, and concurrent complete
+- [x] Create sales order, line, return, and return line models
+- [x] Snapshot unit price and store subtotal, tax, and total
+- [x] Edit lines only in `DRAFT`
+- [x] Confirm: lock lines in product order and increase `reserved` or fail the whole order
+- [x] Process: status only
+- [x] Complete: decrease `on_hand` and `reserved`, write `SALE`
+- [x] Cancel: release reservation when one exists; reject when completed
+- [x] Return: only completed orders, cannot exceed remaining quantity, write `RETURN`
+- [x] Payment status patch independent of stock
+- [x] Enforce warehouse scope and available stock
+- [x] Grant sales action permissions to Super Admin and Sales Staff
+- [x] Audit status changes and returns
+- [x] Test oversell, reservation conflict, complete, cancel, immutability, return cap, and concurrent complete
 
 ## Phase 10 — Notifications and background jobs
 

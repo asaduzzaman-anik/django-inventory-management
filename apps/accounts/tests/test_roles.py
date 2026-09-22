@@ -78,6 +78,12 @@ def test_seed_roles_is_idempotent():
         "submit_purchaseorder",
         "approve_purchaseorder",
         "receive_purchaseorder",
+        "view_salesorder",
+        "add_salesorder",
+        "change_salesorder",
+        "confirm_salesorder",
+        "complete_salesorder",
+        "cancel_salesorder",
     }
     viewer_codes = set(
         Group.objects.get(name="Viewer").permissions.values_list("codename", flat=True)
@@ -93,6 +99,7 @@ def test_seed_roles_is_idempotent():
         "view_stocktransfer",
         "view_stockadjustment",
         "view_purchaseorder",
+        "view_salesorder",
     }
     assert superuser.groups.filter(name="Super Admin").exists()
 

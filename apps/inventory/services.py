@@ -529,3 +529,70 @@ def post_stock_increase(
             )
         )
     return movements
+
+
+def reserve_stock(*, warehouse, lines):
+    """Increase reserved when every line fits in available stock. Caller holds transaction.atomic()."""
+    ordered = sorted(lines, key=lambda item: item["product"].pk)
+    locked = _lock_stock_rows([(item["product"], warehouse) for item in ordered])
+    for item in ordered:
+        stock = locked[(item["product"].pk, warehouse.pk)]
+        if stock.on_hand - stock.reserved < item["quantity"]:
+            raise BusinessRuleError(f"Insufficient available stock for {item['product'].sku}.")
+    for item in ordered:
+        stock = locked[(item["product"].pk, warehouse.pk)]
+        stock.reserved = stock.reserved + item["quantity"]
+        stock.save(update_fields=["reserved", "updated_at"])
+
+
+def release_reservation(*, warehouse, lines):
+    """Decrease reserved. Caller holds transaction.atomic()."""
+    ordered = sorted(lines, key=lambda item: item["product"].pk)
+    locked = _locked_stock(warehouse, [item["product"] for item in ordered])
+    for item in ordered:
+        stock = locked.get(item["product"].pk)
+        if stock is None or stock.reserved < item["quantity"]:
+            raise BusinessRuleError(f"Reserved stock for {item['product'].sku} is missing.")
+        stock.reserved = stock.reserved - item["quantity"]
+        stock.save(update_fields=["reserved", "updated_at"])
+
+
+def post_sale(*, warehouse, lines, user, reference_type, reference_id, reference_code, note=""):
+    """Decrease on-hand and reserved and write SALE rows. Caller holds transaction.atomic()."""
+    ordered = sorted(lines, key=lambda item: item["product"].pk)
+    locked = _locked_stock(warehouse, [item["product"] for item in ordered])
+    for item in ordered:
+        stock = locked.get(item["product"].pk)
+        if stock is None or stock.on_hand < item["quantity"] or stock.reserved < item["quantity"]:
+            raise BusinessRuleError(f"Cannot complete the sale for {item['product'].sku}.")
+    movements = []
+    for item in ordered:
+        stock = locked[item["product"].pk]
+        stock.on_hand = stock.on_hand - item["quantity"]
+        stock.reserved = stock.reserved - item["quantity"]
+        stock.save(update_fields=["on_hand", "reserved", "updated_at"])
+        movements.append(
+            InventoryTransaction.objects.create(
+                product=item["product"],
+                warehouse=warehouse,
+                transaction_type=InventoryTransaction.Type.SALE,
+                quantity_change=-item["quantity"],
+                balance_after=stock.on_hand,
+                reference_type=reference_type,
+                reference_id=reference_id,
+                reference_code=reference_code,
+                note=(note or "")[:255],
+                created_by=user,
+            )
+        )
+    return movements
+
+
+def _locked_stock(warehouse, products):
+    product_ids = [product.pk for product in products]
+    return {
+        stock.product_id: stock
+        for stock in StockLevel.objects.select_for_update()
+        .filter(warehouse=warehouse, product_id__in=product_ids)
+        .order_by("pk")
+    }
