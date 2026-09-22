@@ -1,7 +1,15 @@
 from rest_framework import serializers
 
 from apps.catalog.models import Product
-from apps.inventory.models import InventoryTransaction, StockLevel, StockReceipt, StockReceiptItem
+from apps.inventory.models import (
+    InventoryTransaction,
+    StockAdjustment,
+    StockLevel,
+    StockReceipt,
+    StockReceiptItem,
+    StockTransfer,
+    StockTransferItem,
+)
 from apps.warehouses.models import Warehouse
 
 
@@ -105,3 +113,88 @@ class ReceiptWriteSerializer(serializers.Serializer):
     warehouse = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all())
     note = serializers.CharField(required=False, allow_blank=True)
     items = ReceiptItemWriteSerializer(many=True)
+
+
+class StockTransferItemSerializer(serializers.ModelSerializer):
+    sku = serializers.CharField(source="product.sku", read_only=True)
+    product_name = serializers.CharField(source="product.name", read_only=True)
+
+    class Meta:
+        model = StockTransferItem
+        fields = [
+            "id",
+            "product",
+            "sku",
+            "product_name",
+            "quantity",
+            "transaction_out",
+            "transaction_in",
+        ]
+        read_only_fields = fields
+
+
+class StockTransferSerializer(serializers.ModelSerializer):
+    items = StockTransferItemSerializer(many=True, read_only=True)
+    source_warehouse_code = serializers.CharField(source="source_warehouse.code", read_only=True)
+    destination_warehouse_code = serializers.CharField(source="destination_warehouse.code", read_only=True)
+
+    class Meta:
+        model = StockTransfer
+        fields = [
+            "id",
+            "number",
+            "source_warehouse",
+            "source_warehouse_code",
+            "destination_warehouse",
+            "destination_warehouse_code",
+            "note",
+            "created_by",
+            "created_at",
+            "items",
+        ]
+        read_only_fields = fields
+
+
+class TransferItemWriteSerializer(serializers.Serializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    quantity = serializers.DecimalField(max_digits=12, decimal_places=3)
+
+
+class TransferWriteSerializer(serializers.Serializer):
+    source_warehouse = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all())
+    destination_warehouse = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all())
+    note = serializers.CharField(required=False, allow_blank=True)
+    items = TransferItemWriteSerializer(many=True)
+
+
+class StockAdjustmentSerializer(serializers.ModelSerializer):
+    sku = serializers.CharField(source="product.sku", read_only=True)
+    product_name = serializers.CharField(source="product.name", read_only=True)
+    warehouse_code = serializers.CharField(source="warehouse.code", read_only=True)
+
+    class Meta:
+        model = StockAdjustment
+        fields = [
+            "id",
+            "number",
+            "warehouse",
+            "warehouse_code",
+            "product",
+            "sku",
+            "product_name",
+            "quantity_change",
+            "reason",
+            "note",
+            "transaction",
+            "created_by",
+            "created_at",
+        ]
+        read_only_fields = fields
+
+
+class AdjustmentWriteSerializer(serializers.Serializer):
+    warehouse = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all())
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    quantity_change = serializers.DecimalField(max_digits=12, decimal_places=3)
+    reason = serializers.ChoiceField(choices=StockAdjustment.Reason.choices)
+    note = serializers.CharField(required=False, allow_blank=True)

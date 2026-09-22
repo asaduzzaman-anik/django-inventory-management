@@ -50,6 +50,14 @@ feat: add stock balances and receiving
 Post warehouse receipts through a locked ledger so every stock change keeps a balance history.
 ```
 
+Suggested commit when Phase 7 is committed:
+
+```text
+feat: add stock transfers and adjustments
+
+Move available stock between warehouses and correct balances without dropping on-hand below reserved.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -136,14 +144,14 @@ Post warehouse receipts through a locked ledger so every stock change keeps a ba
 
 ## Phase 7 — Adjustments and transfers
 
-- [ ] Create transfer and adjustment models
-- [ ] Implement `transfer_stock` with lock ordering, available check, and paired ledger rows
-- [ ] Implement `adjust_stock` with reason codes and required note for `OTHER`
-- [ ] Reject transfers that would consume reserved stock
-- [ ] Reject adjustments that would drop on-hand below reserved
-- [ ] Add endpoints and permissions (`transfer_stock`, `adjust_stock` for Super Admin and Warehouse Manager)
-- [ ] Audit both operations
-- [ ] Test insufficient stock, same warehouse, rollback, and permission denial
+- [x] Create transfer and adjustment models
+- [x] Implement `transfer_stock` with lock ordering, available check, and paired ledger rows
+- [x] Implement `adjust_stock` with reason codes and required note for `OTHER`
+- [x] Reject transfers that would consume reserved stock
+- [x] Reject adjustments that would drop on-hand below reserved
+- [x] Add endpoints and permissions (`transfer_stock`, `adjust_stock` for Super Admin and Warehouse Manager)
+- [x] Audit both operations
+- [x] Test insufficient stock, same warehouse, rollback, and permission denial
 
 ## Phase 8 — Purchase orders
 

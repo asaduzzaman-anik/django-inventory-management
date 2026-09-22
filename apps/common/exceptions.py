@@ -36,14 +36,16 @@ def api_exception_handler(exc, context):
         detail = str(data[0])
 
     response.data = {
-        "code": _error_code(response.status_code),
+        "code": _error_code(response.status_code, exc),
         "detail": detail,
         "errors": errors,
     }
     return response
 
 
-def _error_code(status_code):
+def _error_code(status_code, exc=None):
+    if getattr(exc, "default_code", "") == "business_rule":
+        return "business_rule"
     if status_code == 400:
         return "validation_error"
     if status_code == 401:

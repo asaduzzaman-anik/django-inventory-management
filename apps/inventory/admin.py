@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.inventory.models import InventoryTransaction, StockLevel, StockReceipt
+from apps.inventory.models import InventoryTransaction, StockAdjustment, StockLevel, StockReceipt, StockTransfer
 
 
 class ReadOnlyAdmin(admin.ModelAdmin):
@@ -29,3 +29,13 @@ class InventoryTransactionAdmin(ReadOnlyAdmin):
 @admin.register(StockReceipt)
 class StockReceiptAdmin(ReadOnlyAdmin):
     list_display = ("number", "warehouse", "created_by", "created_at")
+
+
+@admin.register(StockTransfer)
+class StockTransferAdmin(ReadOnlyAdmin):
+    list_display = ("number", "source_warehouse", "destination_warehouse", "created_by", "created_at")
+
+
+@admin.register(StockAdjustment)
+class StockAdjustmentAdmin(ReadOnlyAdmin):
+    list_display = ("number", "warehouse", "product", "quantity_change", "reason", "created_at")

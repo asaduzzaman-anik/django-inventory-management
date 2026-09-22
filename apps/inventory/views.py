@@ -9,12 +9,24 @@ from apps.common.scoping import visible_warehouses
 from apps.inventory.filters import InventoryTransactionFilter, StockLevelFilter
 from apps.inventory.models import InventoryTransaction
 from apps.inventory.serializers import (
+    AdjustmentWriteSerializer,
     InventoryTransactionSerializer,
     ReceiptWriteSerializer,
+    StockAdjustmentSerializer,
     StockLevelSerializer,
     StockReceiptSerializer,
+    StockTransferSerializer,
+    TransferWriteSerializer,
 )
-from apps.inventory.services import _receipt_queryset, receive_stock, stock_queryset
+from apps.inventory.services import (
+    _adjustment_queryset,
+    _receipt_queryset,
+    _transfer_queryset,
+    adjust_stock,
+    receive_stock,
+    stock_queryset,
+    transfer_stock,
+)
 
 
 class ReceiptPermissions(BasePermission):
@@ -89,6 +101,105 @@ class StockReceiptDetailView(RetrieveAPIView):
 
     def get_queryset(self):
         return _receipt_queryset().filter(warehouse__in=visible_warehouses(self.request.user))
+
+
+class TransferPermissions(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated:
+            return False
+        if request.method == "POST":
+            return user.has_perm("inventory.transfer_stock")
+        return user.has_perm("inventory.view_stocktransfer")
+
+
+class AdjustmentPermissions(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated:
+            return False
+        if request.method == "POST":
+            return user.has_perm("inventory.adjust_stock")
+        return user.has_perm("inventory.view_stockadjustment")
+
+
+class StockTransferListCreateView(ListCreateAPIView):
+    permission_classes = [TransferPermissions]
+    serializer_class = StockTransferSerializer
+    http_method_names = ["get", "post", "head", "options"]
+
+    def get_queryset(self):
+        visible = visible_warehouses(self.request.user)
+        return _transfer_queryset().filter(source_warehouse__in=visible, destination_warehouse__in=visible)
+
+    def create(self, request, *args, **kwargs):
+        serializer = TransferWriteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        visible = visible_warehouses(request.user)
+        source = get_object_or_404(visible, pk=data["source_warehouse"].pk)
+        destination = get_object_or_404(visible, pk=data["destination_warehouse"].pk)
+        idempotency_key = (request.headers.get("Idempotency-Key") or "").strip() or None
+        document, created = transfer_stock(
+            source=source,
+            destination=destination,
+            items=data["items"],
+            user=request.user,
+            note=data.get("note", ""),
+            idempotency_key=idempotency_key,
+            request=request,
+        )
+        return Response(
+            StockTransferSerializer(document).data,
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
+
+
+class StockTransferDetailView(RetrieveAPIView):
+    permission_classes = [TransferPermissions]
+    serializer_class = StockTransferSerializer
+
+    def get_queryset(self):
+        visible = visible_warehouses(self.request.user)
+        return _transfer_queryset().filter(source_warehouse__in=visible, destination_warehouse__in=visible)
+
+
+class StockAdjustmentListCreateView(ListCreateAPIView):
+    permission_classes = [AdjustmentPermissions]
+    serializer_class = StockAdjustmentSerializer
+    http_method_names = ["get", "post", "head", "options"]
+
+    def get_queryset(self):
+        return _adjustment_queryset().filter(warehouse__in=visible_warehouses(self.request.user))
+
+    def create(self, request, *args, **kwargs):
+        serializer = AdjustmentWriteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        warehouse = get_object_or_404(visible_warehouses(request.user), pk=data["warehouse"].pk)
+        idempotency_key = (request.headers.get("Idempotency-Key") or "").strip() or None
+        document, created = adjust_stock(
+            warehouse=warehouse,
+            product=data["product"],
+            quantity_change=data["quantity_change"],
+            reason=data["reason"],
+            user=request.user,
+            note=data.get("note", ""),
+            idempotency_key=idempotency_key,
+            request=request,
+        )
+        return Response(
+            StockAdjustmentSerializer(document).data,
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
+
+
+class StockAdjustmentDetailView(RetrieveAPIView):
+    permission_classes = [AdjustmentPermissions]
+    serializer_class = StockAdjustmentSerializer
+
+    def get_queryset(self):
+        return _adjustment_queryset().filter(warehouse__in=visible_warehouses(self.request.user))
 
 
 class InventoryTransactionListView(ListAPIView):

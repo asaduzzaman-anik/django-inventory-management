@@ -123,3 +123,99 @@ class StockReceiptItem(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["receipt", "product"], name="unique_receipt_product"),
         ]
+
+
+class StockTransfer(TimeStampedModel):
+    number = models.CharField(max_length=20, unique=True)
+    source_warehouse = models.ForeignKey(
+        "warehouses.Warehouse",
+        on_delete=models.PROTECT,
+        related_name="transfers_out",
+    )
+    destination_warehouse = models.ForeignKey(
+        "warehouses.Warehouse",
+        on_delete=models.PROTECT,
+        related_name="transfers_in",
+    )
+    note = models.TextField(blank=True)
+    idempotency_key = models.CharField(max_length=64, unique=True, null=True, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="stock_transfers",
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+        permissions = [
+            ("transfer_stock", "Can transfer stock"),
+        ]
+
+    def __str__(self):
+        return self.number
+
+
+class StockTransferItem(models.Model):
+    transfer = models.ForeignKey(StockTransfer, on_delete=models.PROTECT, related_name="items")
+    product = models.ForeignKey("catalog.Product", on_delete=models.PROTECT, related_name="transfer_items")
+    quantity = models.DecimalField(max_digits=12, decimal_places=3, validators=[MinValueValidator(0)])
+    transaction_out = models.ForeignKey(
+        InventoryTransaction,
+        on_delete=models.PROTECT,
+        related_name="transfer_items_out",
+    )
+    transaction_in = models.ForeignKey(
+        InventoryTransaction,
+        on_delete=models.PROTECT,
+        related_name="transfer_items_in",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["transfer", "product"], name="unique_transfer_product"),
+        ]
+
+
+class StockAdjustment(TimeStampedModel):
+    class Reason(models.TextChoices):
+        DAMAGED = "DAMAGED", "Damaged"
+        LOST = "LOST", "Lost"
+        FOUND = "FOUND", "Found"
+        CORRECTION = "CORRECTION", "Correction"
+        EXPIRED = "EXPIRED", "Expired"
+        OTHER = "OTHER", "Other"
+
+    number = models.CharField(max_length=20, unique=True)
+    warehouse = models.ForeignKey("warehouses.Warehouse", on_delete=models.PROTECT, related_name="stock_adjustments")
+    product = models.ForeignKey("catalog.Product", on_delete=models.PROTECT, related_name="stock_adjustments")
+    quantity_change = models.DecimalField(max_digits=12, decimal_places=3)
+    reason = models.CharField(max_length=20, choices=Reason.choices)
+    note = models.TextField(blank=True)
+    idempotency_key = models.CharField(max_length=64, unique=True, null=True, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="stock_adjustments",
+    )
+    transaction = models.ForeignKey(
+        InventoryTransaction,
+        on_delete=models.PROTECT,
+        related_name="adjustments",
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+        permissions = [
+            ("adjust_stock", "Can adjust stock"),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(quantity_change__gt=0) | Q(quantity_change__lt=0),
+                name="stockadjustment_quantity_nonzero",
+            ),
+        ]
+
+    def __str__(self):
+        return self.number

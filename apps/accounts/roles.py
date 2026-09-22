@@ -25,7 +25,11 @@ ROLE_PERMISSIONS = {
         "inventory.view_stocklevel",
         "inventory.view_stockreceipt",
         "inventory.view_inventorytransaction",
+        "inventory.view_stocktransfer",
+        "inventory.view_stockadjustment",
         "inventory.receive_stock",
+        "inventory.transfer_stock",
+        "inventory.adjust_stock",
     ),
     "Warehouse Manager": (
         "catalog.view_category",
@@ -41,7 +45,11 @@ ROLE_PERMISSIONS = {
         "inventory.view_stocklevel",
         "inventory.view_stockreceipt",
         "inventory.view_inventorytransaction",
+        "inventory.view_stocktransfer",
+        "inventory.view_stockadjustment",
         "inventory.receive_stock",
+        "inventory.transfer_stock",
+        "inventory.adjust_stock",
     ),
     "Inventory Staff": (
         "catalog.view_category",
@@ -51,6 +59,8 @@ ROLE_PERMISSIONS = {
         "inventory.view_stocklevel",
         "inventory.view_stockreceipt",
         "inventory.view_inventorytransaction",
+        "inventory.view_stocktransfer",
+        "inventory.view_stockadjustment",
         "inventory.receive_stock",
     ),
     "Sales Staff": (
@@ -61,6 +71,8 @@ ROLE_PERMISSIONS = {
         "inventory.view_stocklevel",
         "inventory.view_stockreceipt",
         "inventory.view_inventorytransaction",
+        "inventory.view_stocktransfer",
+        "inventory.view_stockadjustment",
     ),
     "Viewer": (
         "catalog.view_category",
@@ -70,6 +82,8 @@ ROLE_PERMISSIONS = {
         "inventory.view_stocklevel",
         "inventory.view_stockreceipt",
         "inventory.view_inventorytransaction",
+        "inventory.view_stocktransfer",
+        "inventory.view_stockadjustment",
     ),
 }
 
