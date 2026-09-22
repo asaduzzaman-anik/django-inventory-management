@@ -26,6 +26,14 @@ feat: add roles, user administration, and audit logging
 Seed the five roles, manage users through the API, and record login, logout, and user changes.
 ```
 
+Suggested commit when Phase 4 is committed:
+
+```text
+feat: add categories and products
+
+Add the catalog API with nested categories, product images, and role-based write access.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -72,16 +80,16 @@ Seed the five roles, manage users through the API, and record login, logout, and
 
 ## Phase 4 — Catalog
 
-- [ ] Create `Category` with parent, slug, active flag, and sibling-unique name
-- [ ] Enforce depth of two and reject cycles
-- [ ] Create `Product` with SKU, barcode, prices, reorder level, unit, active flag, and image
-- [ ] Uppercase SKU on write
-- [ ] Validate image type and 2 MB limit
-- [ ] Add category and product CRUD endpoints with filters, search, and ordering
-- [ ] Deactivate instead of deleting
-- [ ] Audit create and update
-- [ ] Grant catalog model permissions in `seed_roles`
-- [ ] Test uniqueness, category depth, image rejection, and viewer write denial
+- [x] Create `Category` with parent, slug, active flag, and sibling-unique name
+- [x] Enforce depth of two and reject cycles
+- [x] Create `Product` with SKU, barcode, prices, reorder level, unit, active flag, and image
+- [x] Uppercase SKU on write
+- [x] Validate image type and 2 MB limit
+- [x] Add category and product CRUD endpoints with filters, search, and ordering
+- [x] Deactivate instead of deleting
+- [x] Audit create and update
+- [x] Grant catalog model permissions in `seed_roles`
+- [x] Test uniqueness, category depth, image rejection, and viewer write denial
 
 ## Phase 5 — Suppliers, warehouses, and scope
 

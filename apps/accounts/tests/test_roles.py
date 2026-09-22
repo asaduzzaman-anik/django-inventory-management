@@ -49,8 +49,20 @@ def test_seed_roles_is_idempotent():
     assert Group.objects.count() == 5
     super_admin = Group.objects.get(name="Super Admin")
     codenames = set(super_admin.permissions.values_list("codename", flat=True))
-    assert codenames == {"manage_users", "view_auditlog"}
-    assert Group.objects.get(name="Viewer").permissions.count() == 0
+    assert codenames == {
+        "manage_users",
+        "view_auditlog",
+        "view_category",
+        "add_category",
+        "change_category",
+        "view_product",
+        "add_product",
+        "change_product",
+    }
+    viewer_codes = set(
+        Group.objects.get(name="Viewer").permissions.values_list("codename", flat=True)
+    )
+    assert viewer_codes == {"view_category", "view_product"}
     assert superuser.groups.filter(name="Super Admin").exists()
 
 
