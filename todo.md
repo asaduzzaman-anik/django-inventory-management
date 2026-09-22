@@ -42,6 +42,14 @@ feat: add suppliers, warehouses, and warehouse assignments
 Limit each user to assigned warehouses and let products record a preferred supplier.
 ```
 
+Suggested commit when Phase 6 is committed:
+
+```text
+feat: add stock balances and receiving
+
+Post warehouse receipts through a locked ledger so every stock change keeps a balance history.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -113,18 +121,18 @@ Limit each user to assigned warehouses and let products record a preferred suppl
 
 ## Phase 6 — Inventory core and receiving
 
-- [ ] Create `StockLevel` with unique product/warehouse, non-negative checks, and reserved ≤ on-hand
-- [ ] Create append-only `InventoryTransaction`
-- [ ] Create `DocumentSequence`, `StockReceipt`, and `StockReceiptItem`
-- [ ] Implement locked get-or-create of a stock row
-- [ ] Implement `receive_stock` inside `transaction.atomic` with idempotency key
-- [ ] Write `RECEIPT` rows with `balance_after` and `created_by`
-- [ ] Add stock list with `available` annotation and status filter
-- [ ] Add receipt and transaction list endpoints
-- [ ] Enforce warehouse scope
-- [ ] Grant `receive_stock` to Super Admin, Warehouse Manager, and Inventory Staff
-- [ ] Audit receives
-- [ ] Test posting, idempotency, permissions, scope, and ledger sum equals on-hand
+- [x] Create `StockLevel` with unique product/warehouse, non-negative checks, and reserved ≤ on-hand
+- [x] Create append-only `InventoryTransaction`
+- [x] Create `DocumentSequence`, `StockReceipt`, and `StockReceiptItem`
+- [x] Implement locked get-or-create of a stock row
+- [x] Implement `receive_stock` inside `transaction.atomic` with idempotency key
+- [x] Write `RECEIPT` rows with `balance_after` and `created_by`
+- [x] Add stock list with `available` annotation and status filter
+- [x] Add receipt and transaction list endpoints
+- [x] Enforce warehouse scope
+- [x] Grant `receive_stock` to Super Admin, Warehouse Manager, and Inventory Staff
+- [x] Audit receives
+- [x] Test posting, idempotency, permissions, scope, and ledger sum equals on-hand
 
 ## Phase 7 — Adjustments and transfers
 

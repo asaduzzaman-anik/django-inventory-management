@@ -64,11 +64,23 @@ def test_seed_roles_is_idempotent():
         "view_warehouse",
         "add_warehouse",
         "change_warehouse",
+        "view_stocklevel",
+        "view_stockreceipt",
+        "view_inventorytransaction",
+        "receive_stock",
     }
     viewer_codes = set(
         Group.objects.get(name="Viewer").permissions.values_list("codename", flat=True)
     )
-    assert viewer_codes == {"view_category", "view_product", "view_supplier", "view_warehouse"}
+    assert viewer_codes == {
+        "view_category",
+        "view_product",
+        "view_supplier",
+        "view_warehouse",
+        "view_stocklevel",
+        "view_stockreceipt",
+        "view_inventorytransaction",
+    }
     assert superuser.groups.filter(name="Super Admin").exists()
 
 

@@ -21,6 +21,10 @@ class CanViewAuditLog(RequirePermission):
     required_permission = "audit.view_auditlog"
 
 
+class CanReceiveStock(RequirePermission):
+    required_permission = "inventory.receive_stock"
+
+
 class ModelPermissions(DjangoModelPermissions):
     perms_map = {
         "GET": ["%(app_label)s.view_%(model_name)s"],
