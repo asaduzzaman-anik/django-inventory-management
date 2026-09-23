@@ -114,6 +114,14 @@ feat: add inventory screens
 Add stock, receiving, transfers, and adjustments, and keep history in sync after each post.
 ```
 
+Suggested commit when Phase 15 is committed:
+
+```text
+feat: add purchasing and sales screens
+
+Add purchase-order and sales-order screens, and show notifications in the header.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -305,15 +313,15 @@ Add stock, receiving, transfers, and adjustments, and keep history in sync after
 
 ## Phase 15 — Frontend purchasing and sales
 
-- [ ] Build PO list and draft create/edit with line items
-- [ ] Build PO detail with submit, approve, cancel, and receive
-- [ ] Show receipt history on the PO
-- [ ] Build sales list and draft create/edit with live available quantity
-- [ ] Build sales detail with confirm, process, complete, cancel, payment, and return
-- [ ] Gate each button on the permission list from `/auth/me/`
-- [ ] Surface the notification dropdown from `/notifications/`
-- [ ] Manually run a partial PO receive and a sale through completion
-- [ ] Manually attempt an oversell and confirm the balance does not change
+- [x] Build PO list and draft create/edit with line items
+- [x] Build PO detail with submit, approve, cancel, and receive
+- [x] Show receipt history on the PO
+- [x] Build sales list and draft create/edit with live available quantity
+- [x] Build sales detail with confirm, process, complete, cancel, payment, and return
+- [x] Gate each button on the permission list from `/auth/me/`
+- [x] Surface the notification dropdown from `/notifications/`
+- [x] Manually run a partial PO receive and a sale through completion
+- [x] Manually attempt an oversell and confirm the balance does not change
 
 ## Phase 16 — Dashboard, reports, and admin UI
 

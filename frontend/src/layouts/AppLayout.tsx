@@ -4,6 +4,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { setSessionHandlers } from "../api/client.ts"
 import { Toast } from "../components/Toast.tsx"
 import { useAuth } from "../features/auth/AuthContext.tsx"
+import { NotificationMenu } from "../features/notifications/NotificationMenu.tsx"
 import { NAV_ITEMS, canSee } from "./nav.ts"
 
 export function AppLayout() {
@@ -58,6 +59,7 @@ export function AppLayout() {
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-end gap-4 border-b border-stone-200 bg-white px-4 py-3">
+          <NotificationMenu />
           <NavLink className="text-sm text-stone-700 hover:underline" to="/profile">
             {displayName}
           </NavLink>

@@ -29,6 +29,12 @@ import { StockListPage } from "../features/inventory/StockListPage.tsx"
 import { TransactionListPage } from "../features/inventory/TransactionListPage.tsx"
 import { TransferDetailPage } from "../features/inventory/TransferDetailPage.tsx"
 import { TransferPage } from "../features/inventory/TransferPage.tsx"
+import { PurchaseDetailPage } from "../features/purchasing/PurchaseDetailPage.tsx"
+import { PurchaseFormPage } from "../features/purchasing/PurchaseFormPage.tsx"
+import { PurchaseListPage } from "../features/purchasing/PurchaseListPage.tsx"
+import { SalesDetailPage } from "../features/sales/SalesDetailPage.tsx"
+import { SalesFormPage } from "../features/sales/SalesFormPage.tsx"
+import { SalesListPage } from "../features/sales/SalesListPage.tsx"
 import { PlaceholderPage } from "../pages/PlaceholderPage.tsx"
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -97,8 +103,14 @@ export function AppRoutes() {
         <Route path="inventory/receipts/:id" element={<ReceiptDetailPage />} />
         <Route path="inventory/transfers/:id" element={<TransferDetailPage />} />
         <Route path="inventory/adjustments/:id" element={<AdjustmentDetailPage />} />
-        <Route path="purchasing" element={<PlaceholderPage title="Purchasing" />} />
-        <Route path="sales" element={<PlaceholderPage title="Sales" />} />
+        <Route path="purchasing" element={<PurchaseListPage />} />
+        <Route path="purchasing/new" element={<PurchaseFormPage />} />
+        <Route path="purchasing/:id" element={<PurchaseDetailPage />} />
+        <Route path="purchasing/:id/edit" element={<PurchaseFormPage />} />
+        <Route path="sales" element={<SalesListPage />} />
+        <Route path="sales/new" element={<SalesFormPage />} />
+        <Route path="sales/:id" element={<SalesDetailPage />} />
+        <Route path="sales/:id/edit" element={<SalesFormPage />} />
         <Route path="reports" element={<PlaceholderPage title="Reports" />} />
         <Route path="admin" element={<PlaceholderPage title="Admin" />} />
         <Route path="access-denied" element={<AccessDeniedPage />} />
