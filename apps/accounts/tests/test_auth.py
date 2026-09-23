@@ -173,6 +173,17 @@ def test_login_is_throttled(client, user):
     assert statuses.count(401) == 10
 
 
+@pytest.mark.django_db
+def test_refresh_is_throttled(client, user):
+    tokens = login(client).json()
+    statuses = [
+        client.post("/api/v1/auth/refresh/", {"refresh": tokens["refresh"]}, format="json").status_code
+        for _ in range(21)
+    ]
+    assert statuses[-1] == 429
+    assert 200 in statuses
+
+
 def test_schema_and_docs_are_public(client):
     schema = client.get("/api/schema/")
     docs = client.get("/api/docs/")

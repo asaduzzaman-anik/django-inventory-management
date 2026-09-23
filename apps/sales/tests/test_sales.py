@@ -13,7 +13,7 @@ from apps.catalog.models import Category, Product
 from apps.inventory.models import InventoryTransaction, StockLevel
 from apps.inventory.services import BusinessRuleError
 from apps.sales.models import SalesOrder
-from apps.sales.services import complete_sales_order
+from apps.sales.services import complete_sales_order, confirm_sales_order
 from apps.warehouses.models import Warehouse
 
 PASSWORD = "Str0ng-pass-word"
@@ -285,3 +285,49 @@ def test_concurrent_complete_deducts_stock_once(catalog):
     assert row.reserved == Decimal("0.000")
     assert InventoryTransaction.objects.filter(transaction_type=InventoryTransaction.Type.SALE).count() == 1
     assert SalesOrder.objects.get(pk=order.pk).status == SalesOrder.Status.COMPLETED
+
+
+@pytest.mark.django_db(transaction=True)
+def test_concurrent_confirm_reserves_stock_once(catalog):
+    seller = user_with_role("seller", "Sales Staff", catalog["main"])
+    row = stock(catalog, Decimal("10.000"))
+    orders = []
+    for number in ("SO-000201", "SO-000202"):
+        order = SalesOrder.objects.create(
+            number=number,
+            warehouse=catalog["main"],
+            customer_name="Ada Lovelace",
+            created_by=seller,
+            status=SalesOrder.Status.DRAFT,
+        )
+        order.items.create(
+            product=catalog["bolt"],
+            quantity=Decimal("6.000"),
+            unit_price=Decimal("2.50"),
+            line_total=Decimal("15.00"),
+        )
+        orders.append(order)
+    results = []
+
+    def worker(order):
+        try:
+            confirm_sales_order(order=order, user=seller)
+            results.append("ok")
+        except BusinessRuleError:
+            results.append("conflict")
+        finally:
+            connection.close()
+
+    threads = [Thread(target=worker, args=(order,)) for order in orders]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=20)
+        assert not thread.is_alive()
+
+    assert sorted(results) == ["conflict", "ok"]
+    row.refresh_from_db()
+    assert row.on_hand == Decimal("10.000")
+    assert row.reserved == Decimal("6.000")
+    assert SalesOrder.objects.filter(status=SalesOrder.Status.CONFIRMED).count() == 1
+    assert SalesOrder.objects.filter(status=SalesOrder.Status.DRAFT).count() == 1

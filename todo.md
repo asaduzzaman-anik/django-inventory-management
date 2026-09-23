@@ -130,6 +130,14 @@ feat: add dashboard, reports, and admin screens
 Show dashboard charts, scoped reports with export, and user and audit administration.
 ```
 
+Suggested commit when Phase 17 is committed:
+
+```text
+test: cover inventory concurrency and production settings
+
+Add concurrent confirm coverage, a role smoke test, and production settings that refuse a missing secret or DEBUG.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -342,15 +350,15 @@ Show dashboard charts, scoped reports with export, and user and audit administra
 
 ## Phase 17 — Hardening
 
-- [ ] Add the concurrent confirm and concurrent complete tests
-- [ ] Add a role-matrix smoke test for the five roles
-- [ ] Check stock and dashboard endpoints for N+1 queries and fix them with `select_related` or `prefetch_related`
-- [ ] Add any missing indexes from the design as a migration
-- [ ] Add `config/settings/prod.py` with `DEBUG` off, allowed hosts, SSL flags, and a separate JWT signing key setting
-- [ ] Confirm production refuses to start when `SECRET_KEY` or database settings are missing
-- [ ] Review throttles on login and refresh
-- [ ] Run the full backend suite and the frontend unit tests
-- [ ] Click through the main flows on a desktop width and a narrow width
+- [x] Add the concurrent confirm and concurrent complete tests
+- [x] Add a role-matrix smoke test for the five roles
+- [x] Check stock and dashboard endpoints for N+1 queries and fix them with `select_related` or `prefetch_related`
+- [x] Add any missing indexes from the design as a migration
+- [x] Add `config/settings/prod.py` with `DEBUG` off, allowed hosts, SSL flags, and a separate JWT signing key setting
+- [x] Confirm production refuses to start when `SECRET_KEY` or database settings are missing
+- [x] Review throttles on login and refresh
+- [x] Run the full backend suite and the frontend unit tests
+- [x] Click through the main flows on a desktop width and a narrow width
 
 ## Phase 18 — Documentation and deployment
 

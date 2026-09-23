@@ -49,6 +49,8 @@ class LoginView(TokenObtainPairView):
 
 class RefreshView(TokenRefreshView):
     permission_classes = [AllowAny]
+    throttle_classes = [AnonRateThrottle, ScopedRateThrottle]
+    throttle_scope = "refresh"
 
 
 class LogoutView(APIView):

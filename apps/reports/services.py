@@ -2,7 +2,7 @@ from datetime import datetime, time, timedelta
 from decimal import Decimal
 
 from django.core.cache import cache
-from django.db.models import DecimalField, ExpressionWrapper, F, Sum
+from django.db.models import DecimalField, ExpressionWrapper, F, Sum, prefetch_related_objects
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
@@ -106,6 +106,8 @@ def report_rows(name, user, params):
 
 
 def _build_dashboard(user):
+    if user is not None and getattr(user, "is_authenticated", False):
+        prefetch_related_objects([user], "groups")
     since = timezone.now() - timedelta(days=30)
     stock = _scoped_stock(user)
     low = stock.filter(status="LOW").count()
@@ -312,7 +314,11 @@ def _warehouses(user):
 
 
 def _movements(user):
-    return InventoryTransaction.objects.filter(warehouse__in=_warehouses(user)).order_by("-created_at")
+    return (
+        InventoryTransaction.objects.select_related("product", "warehouse", "created_by")
+        .filter(warehouse__in=_warehouses(user))
+        .order_by("-created_at")
+    )
 
 
 def _filter_stock(queryset, params):
