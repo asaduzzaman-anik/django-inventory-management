@@ -138,6 +138,14 @@ test: cover inventory concurrency and production settings
 Add concurrent confirm coverage, a role smoke test, and production settings that refuse a missing secret or DEBUG.
 ```
 
+Suggested commit when Phase 18 is committed:
+
+```text
+docs: add portfolio README and deployment notes
+
+Document local setup, the stock ledger, Compose services, and a local-only demo seed.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -362,10 +370,10 @@ Add concurrent confirm coverage, a role smoke test, and production settings that
 
 ## Phase 18 — Documentation and deployment
 
-- [ ] Write the README: purpose, architecture, stack, setup, MySQL, Redis, env vars, seed, tests, and demo walkthrough
-- [ ] Document API docs URL, roles, and the stock ledger approach
-- [ ] Add Dockerfiles and `docker-compose.yml` for MySQL, Redis, Gunicorn, worker, and beat
-- [ ] Add Gunicorn to `requirements/prod.txt`
-- [ ] Add an optional local-only `seed_demo` command
-- [ ] Document production process layout: Nginx, Gunicorn, one beat process, media, and backups
-- [ ] Follow the README against a clean database and reach a logged-in dashboard
+- [x] Write the README: purpose, architecture, stack, setup, MySQL, Redis, env vars, seed, tests, and demo walkthrough
+- [x] Document API docs URL, roles, and the stock ledger approach
+- [x] Add Dockerfiles and `docker-compose.yml` for MySQL, Redis, Gunicorn, worker, and beat
+- [x] Add Gunicorn to `requirements/prod.txt`
+- [x] Add an optional local-only `seed_demo` command
+- [x] Document production process layout: Nginx, Gunicorn, one beat process, media, and backups
+- [x] Follow the README against a clean database and reach a logged-in dashboard
