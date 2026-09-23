@@ -98,6 +98,14 @@ feat: scaffold React app and authentication UI
 Add a Vite shell that logs in, restores the session, and logs out, and allow that origin through CORS.
 ```
 
+Suggested commit when Phase 13 is committed:
+
+```text
+feat: add master-data screens
+
+Add category, product, supplier, and warehouse screens with scoped stock on the detail pages.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -265,16 +273,16 @@ Add a Vite shell that logs in, restores the session, and logs out, and allow tha
 
 ## Phase 13 — Frontend master data
 
-- [ ] Build shared table, pagination, modal, confirm dialog, empty state, and form field components
-- [ ] Build category list with create and edit
-- [ ] Build product list, create, edit, and detail
-- [ ] Support product image upload and active filter
-- [ ] Build supplier list, create, edit, and detail
-- [ ] Build warehouse list, create, edit, and detail
-- [ ] Show per-warehouse stock on product detail and warehouse detail
-- [ ] Map server validation errors onto forms
-- [ ] Hide write actions for Viewer and Sales Staff
-- [ ] Manually create one record of each type in the browser
+- [x] Build shared table, pagination, modal, confirm dialog, empty state, and form field components
+- [x] Build category list with create and edit
+- [x] Build product list, create, edit, and detail
+- [x] Support product image upload and active filter
+- [x] Build supplier list, create, edit, and detail
+- [x] Build warehouse list, create, edit, and detail
+- [x] Show per-warehouse stock on product detail and warehouse detail
+- [x] Map server validation errors onto forms
+- [x] Hide write actions for Viewer and Sales Staff
+- [x] Manually create one record of each type in the browser
 
 ## Phase 14 — Frontend inventory
 
