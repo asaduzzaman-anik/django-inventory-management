@@ -122,6 +122,14 @@ feat: add purchasing and sales screens
 Add purchase-order and sales-order screens, and show notifications in the header.
 ```
 
+Suggested commit when Phase 16 is committed:
+
+```text
+feat: add dashboard, reports, and admin screens
+
+Show dashboard charts, scoped reports with export, and user and audit administration.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -325,12 +333,12 @@ Add purchase-order and sales-order screens, and show notifications in the header
 
 ## Phase 16 — Dashboard, reports, and admin UI
 
-- [ ] Build the dashboard cards and three Recharts visualizations
-- [ ] Build inventory, movement, purchase, and sales report pages with filters
-- [ ] Add export buttons that download CSV and xlsx
-- [ ] Build user management: create, role, warehouse assignment, deactivate
-- [ ] Build the audit log table with filters
-- [ ] Manually verify Super Admin, a one-warehouse manager, and a Viewer against the same data
+- [x] Build the dashboard cards and three Recharts visualizations
+- [x] Build inventory, movement, purchase, and sales report pages with filters
+- [x] Add export buttons that download CSV and xlsx
+- [x] Build user management: create, role, warehouse assignment, deactivate
+- [x] Build the audit log table with filters
+- [x] Manually verify Super Admin, a one-warehouse manager, and a Viewer against the same data
 
 ## Phase 17 — Hardening
 

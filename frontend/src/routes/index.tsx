@@ -9,7 +9,7 @@ import { ProfilePage } from "../features/auth/ProfilePage.tsx"
 import { AppLayout } from "../layouts/AppLayout.tsx"
 import { AuthLayout } from "../layouts/AuthLayout.tsx"
 import { AccessDeniedPage } from "../pages/AccessDeniedPage.tsx"
-import { DashboardPage } from "../pages/DashboardPage.tsx"
+import { DashboardPage } from "../features/dashboard/DashboardPage.tsx"
 import { NotFoundPage } from "../pages/NotFoundPage.tsx"
 import { CategoryListPage } from "../features/catalog/CategoryListPage.tsx"
 import { ProductDetailPage } from "../features/catalog/ProductDetailPage.tsx"
@@ -35,7 +35,14 @@ import { PurchaseListPage } from "../features/purchasing/PurchaseListPage.tsx"
 import { SalesDetailPage } from "../features/sales/SalesDetailPage.tsx"
 import { SalesFormPage } from "../features/sales/SalesFormPage.tsx"
 import { SalesListPage } from "../features/sales/SalesListPage.tsx"
-import { PlaceholderPage } from "../pages/PlaceholderPage.tsx"
+import { AuditLogPage } from "../features/admin/AuditLogPage.tsx"
+import { UserDetailPage } from "../features/admin/UserDetailPage.tsx"
+import { UserFormPage } from "../features/admin/UserFormPage.tsx"
+import { UserListPage } from "../features/admin/UserListPage.tsx"
+import { InventoryReportPage } from "../features/reports/InventoryReportPage.tsx"
+import { MovementReportPage } from "../features/reports/MovementReportPage.tsx"
+import { PurchaseReportPage } from "../features/reports/PurchaseReportPage.tsx"
+import { SalesReportPage } from "../features/reports/SalesReportPage.tsx"
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, ready } = useAuth()
@@ -111,8 +118,16 @@ export function AppRoutes() {
         <Route path="sales/new" element={<SalesFormPage />} />
         <Route path="sales/:id" element={<SalesDetailPage />} />
         <Route path="sales/:id/edit" element={<SalesFormPage />} />
-        <Route path="reports" element={<PlaceholderPage title="Reports" />} />
-        <Route path="admin" element={<PlaceholderPage title="Admin" />} />
+        <Route path="reports" element={<Navigate to="/reports/inventory" replace />} />
+        <Route path="reports/inventory" element={<InventoryReportPage />} />
+        <Route path="reports/movements" element={<MovementReportPage />} />
+        <Route path="reports/purchases" element={<PurchaseReportPage />} />
+        <Route path="reports/sales" element={<SalesReportPage />} />
+        <Route path="admin" element={<Navigate to="/admin/users" replace />} />
+        <Route path="admin/users" element={<UserListPage />} />
+        <Route path="admin/users/new" element={<UserFormPage />} />
+        <Route path="admin/users/:id" element={<UserDetailPage />} />
+        <Route path="admin/audit-logs" element={<AuditLogPage />} />
         <Route path="access-denied" element={<AccessDeniedPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
