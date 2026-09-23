@@ -40,7 +40,7 @@ export function ProductFormPage() {
     navigate(`/products/${saved.id}`)
   }
 
-  if (productId !== null && product.isPending) {
+  if ((productId !== null && product.isPending) || categories.isPending || suppliers.isPending) {
     return <Spinner />
   }
   if (product.isError) {

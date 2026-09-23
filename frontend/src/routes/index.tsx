@@ -21,6 +21,14 @@ import { SupplierListPage } from "../features/suppliers/SupplierListPage.tsx"
 import { WarehouseDetailPage } from "../features/warehouses/WarehouseDetailPage.tsx"
 import { WarehouseFormPage } from "../features/warehouses/WarehouseFormPage.tsx"
 import { WarehouseListPage } from "../features/warehouses/WarehouseListPage.tsx"
+import { AdjustmentDetailPage } from "../features/inventory/AdjustmentDetailPage.tsx"
+import { AdjustmentPage } from "../features/inventory/AdjustmentPage.tsx"
+import { ReceiptDetailPage } from "../features/inventory/ReceiptDetailPage.tsx"
+import { ReceivePage } from "../features/inventory/ReceivePage.tsx"
+import { StockListPage } from "../features/inventory/StockListPage.tsx"
+import { TransactionListPage } from "../features/inventory/TransactionListPage.tsx"
+import { TransferDetailPage } from "../features/inventory/TransferDetailPage.tsx"
+import { TransferPage } from "../features/inventory/TransferPage.tsx"
 import { PlaceholderPage } from "../pages/PlaceholderPage.tsx"
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -81,7 +89,14 @@ export function AppRoutes() {
         <Route path="warehouses/new" element={<WarehouseFormPage />} />
         <Route path="warehouses/:id" element={<WarehouseDetailPage />} />
         <Route path="warehouses/:id/edit" element={<WarehouseFormPage />} />
-        <Route path="inventory" element={<PlaceholderPage title="Inventory" />} />
+        <Route path="inventory" element={<StockListPage />} />
+        <Route path="inventory/transactions" element={<TransactionListPage />} />
+        <Route path="inventory/receive" element={<ReceivePage />} />
+        <Route path="inventory/transfer" element={<TransferPage />} />
+        <Route path="inventory/adjust" element={<AdjustmentPage />} />
+        <Route path="inventory/receipts/:id" element={<ReceiptDetailPage />} />
+        <Route path="inventory/transfers/:id" element={<TransferDetailPage />} />
+        <Route path="inventory/adjustments/:id" element={<AdjustmentDetailPage />} />
         <Route path="purchasing" element={<PlaceholderPage title="Purchasing" />} />
         <Route path="sales" element={<PlaceholderPage title="Sales" />} />
         <Route path="reports" element={<PlaceholderPage title="Reports" />} />

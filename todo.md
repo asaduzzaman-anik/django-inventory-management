@@ -106,6 +106,14 @@ feat: add master-data screens
 Add category, product, supplier, and warehouse screens with scoped stock on the detail pages.
 ```
 
+Suggested commit when Phase 14 is committed:
+
+```text
+feat: add inventory screens
+
+Add stock, receiving, transfers, and adjustments, and keep history in sync after each post.
+```
+
 ## Phase 1 — Foundation
 
 - [x] Add `requirements/base.txt`, `dev.txt`, and `prod.txt`, and point the root `requirements.txt` at dev
@@ -286,14 +294,14 @@ Add category, product, supplier, and warehouse screens with scoped stock on the 
 
 ## Phase 14 — Frontend inventory
 
-- [ ] Build the stock overview with warehouse, category, status, and search filters
-- [ ] Build receive, transfer, and adjustment forms with confirmation dialogs
-- [ ] Show available quantity on transfer and adjustment
-- [ ] Build transaction history with type and date filters
-- [ ] Build read-only receipt, transfer, and adjustment detail pages
-- [ ] Invalidate stock and transaction queries after a successful post
-- [ ] Display 409 business-rule messages
-- [ ] Manually receive, transfer, and adjust, then confirm history
+- [x] Build the stock overview with warehouse, category, status, and search filters
+- [x] Build receive, transfer, and adjustment forms with confirmation dialogs
+- [x] Show available quantity on transfer and adjustment
+- [x] Build transaction history with type and date filters
+- [x] Build read-only receipt, transfer, and adjustment detail pages
+- [x] Invalidate stock and transaction queries after a successful post
+- [x] Display 409 business-rule messages
+- [x] Manually receive, transfer, and adjust, then confirm history
 
 ## Phase 15 — Frontend purchasing and sales
 

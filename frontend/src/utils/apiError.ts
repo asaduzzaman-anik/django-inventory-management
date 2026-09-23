@@ -32,3 +32,17 @@ export function formBanner(error: unknown) {
   }
   return ""
 }
+
+export function documentError(error: unknown) {
+  const items = (error as { response?: { data?: ApiErrorBody } }).response?.data?.errors?.items
+  if (typeof items === "string" && items) {
+    return items
+  }
+  if (Array.isArray(items)) {
+    const text = items.filter((item) => typeof item === "string").join(" ")
+    if (text) {
+      return text
+    }
+  }
+  return formBanner(error)
+}
