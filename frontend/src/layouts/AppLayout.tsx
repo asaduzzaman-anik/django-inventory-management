@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { LuGithub, LuHeart } from "react-icons/lu"
 import { MdMenuOpen } from "react-icons/md"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 
@@ -188,6 +189,22 @@ export function AppLayout() {
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <Outlet />
         </main>
+        <footer className="mt-auto px-4 pb-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 border-t border-gray-200 pt-5 text-sm text-gray-500">
+            <span>Made with love</span>
+            <LuHeart className="text-rose-500" size={15} aria-hidden="true" />
+            <span>by</span>
+            <a
+              href="https://github.com/asaduzzaman-anik"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-medium text-gray-800 transition-colors hover:text-primary"
+            >
+              Md Asaduzzaman Anik
+              <LuGithub size={16} aria-hidden="true" />
+            </a>
+          </div>
+        </footer>
       </div>
       {message ? <Toast message={message} onClose={() => setMessage("")} /> : null}
     </div>
