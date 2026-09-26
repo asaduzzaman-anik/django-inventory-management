@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 
+import { SearchField } from "./ui/SearchField.tsx"
 import { Select } from "./ui/Select.tsx"
 
 export function ListFilters({
@@ -18,24 +19,19 @@ export function ListFilters({
   action?: ReactNode
 }) {
   return (
-    <div className="mb-4 flex flex-wrap items-end gap-3">
-      <label className="block text-sm">
-        <span className="font-medium text-stone-700">Search</span>
-        <input
-          value={search}
-          onChange={(event) => onSearch(event.target.value)}
-          className="mt-1 w-56 rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none focus:border-teal-800"
-        />
-      </label>
-      <div className="w-40">
-        <Select label="Status" value={active} onChange={(event) => onActive(event.target.value)}>
-          <option value="true">Active</option>
-          <option value="false">Inactive</option>
-          <option value="">All</option>
-        </Select>
+    <div className="filter-toolbar">
+      <SearchField value={search} onChange={onSearch} className="md:w-80" />
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="w-40">
+          <Select label="Status" value={active} onChange={(event) => onActive(event.target.value)}>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+            <option value="">All</option>
+          </Select>
+        </div>
+        {extra}
+        {action}
       </div>
-      {extra}
-      <div className="ml-auto">{action}</div>
     </div>
   )
 }

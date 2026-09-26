@@ -44,27 +44,33 @@ export function ReportFrame({
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold text-stone-900">{title}</h1>
+        <h1 className="page-title">{title}</h1>
         {canExport ? (
           <div className="flex gap-2">
-            <Button type="button" variant="ghost" disabled={pending !== null} onClick={() => exportFile("csv")}>
+            <Button className="btn-sm" type="button" variant="ghost" disabled={pending !== null} onClick={() => exportFile("csv")}>
               {pending === "csv" ? "Saving…" : "Export CSV"}
             </Button>
-            <Button type="button" variant="ghost" disabled={pending !== null} onClick={() => exportFile("xlsx")}>
+            <Button className="btn-sm" type="button" variant="ghost" disabled={pending !== null} onClick={() => exportFile("xlsx")}>
               {pending === "xlsx" ? "Saving…" : "Export Excel"}
             </Button>
           </div>
         ) : null}
       </div>
-      <nav className="flex flex-wrap gap-3 text-sm">
+      <nav className="flex flex-wrap gap-2 text-sm">
         {LINKS.map(([to, label]) => (
-          <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "font-medium text-teal-800 underline" : "text-stone-600 hover:underline")}>
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              `rounded-md px-3 py-2 font-medium ${isActive ? "bg-brand-100 text-brand-500" : "text-gray-600 hover:bg-gray-100"}`
+            }
+          >
             {label}
           </NavLink>
         ))}
       </nav>
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
-      <div className="flex flex-wrap items-end gap-3">{filters}</div>
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
+      <div className="filter-toolbar">{filters}</div>
       {children}
     </section>
   )

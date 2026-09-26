@@ -94,7 +94,7 @@ export function SalesDetailPage() {
     return <Spinner />
   }
   if (order.isError || !order.data) {
-    return <p className="text-sm text-red-800">Could not load this sales order.</p>
+    return <p className="text-sm text-error-700">Could not load this sales order.</p>
   }
 
   const item = order.data
@@ -113,17 +113,17 @@ export function SalesDetailPage() {
     <section className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link className="text-sm text-teal-800 underline" to="/sales">
+          <Link className="text-sm link" to="/sales">
             Sales
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold text-stone-900">{item.number}</h1>
-          <p className="text-sm text-stone-600">
+          <h1 className="mt-2 page-title">{item.number}</h1>
+          <p className="text-sm text-gray-500">
             {salesStatusLabel(item.status)} · {paymentLabel(item.payment_status)}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           {item.status === "DRAFT" && canChange ? (
-            <Link className="rounded-md bg-white px-4 py-2 text-sm font-medium text-stone-800 ring-1 ring-stone-300" to={`/sales/${item.id}/edit`}>
+            <Link className="btn-secondary" to={`/sales/${item.id}/edit`}>
               Edit
             </Link>
           ) : null}
@@ -149,8 +149,8 @@ export function SalesDetailPage() {
           ) : null}
         </div>
       </div>
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
+      <dl className="card card-body grid gap-4 text-sm sm:grid-cols-2">
         <Field label="Customer" value={item.customer_name} />
         <Field label="Warehouse" value={item.warehouse_code} />
         <Field label="Email" value={item.customer_email || "—"} />
@@ -191,7 +191,7 @@ export function SalesDetailPage() {
       />
       {item.status === "COMPLETED" && canComplete && openLines.length ? (
         <div className="max-w-xl space-y-3">
-          <h2 className="text-lg font-semibold text-stone-900">Return</h2>
+          <h2 className="section-title">Return</h2>
           {openLines.map((line) => (
             <Input
               key={line.id}
@@ -206,15 +206,15 @@ export function SalesDetailPage() {
         </div>
       ) : null}
       <div>
-        <h2 className="mb-2 text-lg font-semibold text-stone-900">Returns</h2>
-        {returns.isError ? <p className="text-sm text-red-800">Could not load returns.</p> : null}
-        {returns.data && !returns.data.results.length ? <p className="text-sm text-stone-600">No returns yet.</p> : null}
+        <h2 className="mb-2 section-title">Returns</h2>
+        {returns.isError ? <p className="text-sm text-error-700">Could not load returns.</p> : null}
+        {returns.data && !returns.data.results.length ? <p className="text-sm text-gray-500">No returns yet.</p> : null}
         <ul className="space-y-2 text-sm">
           {(returns.data?.results ?? []).map((document) => (
-            <li key={document.id} className="rounded-md border border-stone-200 bg-white px-3 py-2">
+            <li key={document.id} className="rounded-lg border border-gray-200 bg-white shadow-theme-xs px-3 py-2">
               <span className="font-medium">{document.number}</span>
-              <span className="text-stone-500"> · {formatWhen(document.created_at)}</span>
-              <span className="block text-stone-700">{document.items.map((line) => `${line.sku} ${line.quantity}`).join(", ")}</span>
+              <span className="text-gray-500"> · {formatWhen(document.created_at)}</span>
+              <span className="block text-gray-700">{document.items.map((line) => `${line.sku} ${line.quantity}`).join(", ")}</span>
             </li>
           ))}
         </ul>
@@ -236,8 +236,8 @@ export function SalesDetailPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-stone-500">{label}</dt>
-      <dd className="text-stone-900">{value}</dd>
+      <dt className="text-gray-500">{label}</dt>
+      <dd className="text-gray-900">{value}</dd>
     </div>
   )
 }

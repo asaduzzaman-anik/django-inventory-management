@@ -79,7 +79,7 @@ export function PurchaseDetailPage() {
     return <Spinner />
   }
   if (order.isError || !order.data) {
-    return <p className="text-sm text-red-800">Could not load this purchase order.</p>
+    return <p className="text-sm text-error-700">Could not load this purchase order.</p>
   }
 
   const item = order.data
@@ -91,15 +91,15 @@ export function PurchaseDetailPage() {
     <section className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link className="text-sm text-teal-800 underline" to="/purchasing">
+          <Link className="text-sm link" to="/purchasing">
             Purchasing
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold text-stone-900">{item.number}</h1>
-          <p className="text-sm text-stone-600">{purchaseStatusLabel(item.status)}</p>
+          <h1 className="mt-2 page-title">{item.number}</h1>
+          <p className="text-sm text-gray-500">{purchaseStatusLabel(item.status)}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {item.status === "DRAFT" && canChange ? (
-            <Link className="rounded-md bg-white px-4 py-2 text-sm font-medium text-stone-800 ring-1 ring-stone-300" to={`/purchasing/${item.id}/edit`}>
+            <Link className="btn-secondary" to={`/purchasing/${item.id}/edit`}>
               Edit
             </Link>
           ) : null}
@@ -120,8 +120,8 @@ export function PurchaseDetailPage() {
           ) : null}
         </div>
       </div>
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
+      <dl className="card card-body grid gap-4 text-sm sm:grid-cols-2">
         <Field label="Supplier" value={item.supplier_name} />
         <Field label="Warehouse" value={item.warehouse_code} />
         <Field label="Total" value={item.total} />
@@ -142,7 +142,7 @@ export function PurchaseDetailPage() {
       />
       {canReceive && ["APPROVED", "PARTIALLY_RECEIVED"].includes(item.status) && openLines.length ? (
         <div className="max-w-xl space-y-3">
-          <h2 className="text-lg font-semibold text-stone-900">Receive</h2>
+          <h2 className="section-title">Receive</h2>
           {openLines.map((line) => (
             <Input
               key={line.id}
@@ -157,15 +157,15 @@ export function PurchaseDetailPage() {
         </div>
       ) : null}
       <div>
-        <h2 className="mb-2 text-lg font-semibold text-stone-900">Receipts</h2>
-        {receipts.isError ? <p className="text-sm text-red-800">Could not load receipts.</p> : null}
-        {receipts.data && !receipts.data.results.length ? <p className="text-sm text-stone-600">No receipts yet.</p> : null}
+        <h2 className="mb-2 section-title">Receipts</h2>
+        {receipts.isError ? <p className="text-sm text-error-700">Could not load receipts.</p> : null}
+        {receipts.data && !receipts.data.results.length ? <p className="text-sm text-gray-500">No receipts yet.</p> : null}
         <ul className="space-y-2 text-sm">
           {(receipts.data?.results ?? []).map((receipt) => (
-            <li key={receipt.id} className="rounded-md border border-stone-200 bg-white px-3 py-2">
+            <li key={receipt.id} className="rounded-lg border border-gray-200 bg-white shadow-theme-xs px-3 py-2">
               <span className="font-medium">{receipt.number}</span>
-              <span className="text-stone-500"> · {formatWhen(receipt.received_at)}</span>
-              <span className="block text-stone-700">
+              <span className="text-gray-500"> · {formatWhen(receipt.received_at)}</span>
+              <span className="block text-gray-700">
                 {receipt.items.map((line) => `${line.sku} ${line.quantity}`).join(", ")}
               </span>
             </li>
@@ -197,8 +197,8 @@ export function PurchaseDetailPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-stone-500">{label}</dt>
-      <dd className="text-stone-900">{value}</dd>
+      <dt className="text-gray-500">{label}</dt>
+      <dd className="text-gray-900">{value}</dd>
     </div>
   )
 }

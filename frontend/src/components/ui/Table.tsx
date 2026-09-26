@@ -21,14 +21,14 @@ export function Table<T>({
   onSort?: (key: string) => void
 }) {
   return (
-    <div className="overflow-x-auto rounded-md border border-stone-200 bg-white">
-      <table className="min-w-full text-left text-sm">
-        <thead className="border-b border-stone-200 bg-stone-50 text-stone-600">
+    <div className="table-responsive">
+      <table className="table">
+        <thead className="table-thead">
           <tr>
             {columns.map((column) => (
-              <th key={column.key} className="px-3 py-2 font-medium">
+              <th key={column.key} className="table-thead-th">
                 {column.sortKey && onSort ? (
-                  <button type="button" className="hover:text-stone-900" onClick={() => onSort(column.sortKey!)}>
+                  <button type="button" className="inline-flex items-center gap-1 hover:text-gray-900" onClick={() => onSort(column.sortKey!)}>
                     {column.header}
                     {ordering === column.sortKey ? " ↑" : ordering === `-${column.sortKey}` ? " ↓" : ""}
                   </button>
@@ -41,9 +41,9 @@ export function Table<T>({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={rowKey(row)} className="border-b border-stone-100 last:border-0">
+            <tr key={rowKey(row)} className="table-tr">
               {columns.map((column) => (
-                <td key={column.key} className="px-3 py-2 text-stone-800">
+                <td key={column.key} className="table-td">
                   {column.render(row)}
                 </td>
               ))}

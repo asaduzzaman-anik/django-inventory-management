@@ -32,9 +32,9 @@ export function AuditLogPage() {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-semibold text-stone-900">Audit log</h1>
+      <h1 className="page-title">Audit log</h1>
       <AdminNav />
-      <div className="flex flex-wrap items-end gap-3">
+      <div className="filter-toolbar">
         <div className="w-48">
           <Select label="Action" value={action} onChange={(event) => { setAction(event.target.value); setPage(1) }}>
             <option value="">All</option>

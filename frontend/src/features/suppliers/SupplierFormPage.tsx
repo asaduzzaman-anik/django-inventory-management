@@ -32,15 +32,15 @@ export function SupplierFormPage() {
     return <Spinner />
   }
   if (supplier.isError) {
-    return <p className="text-sm text-red-800">Could not load this supplier.</p>
+    return <p className="text-sm text-error-700">Could not load this supplier.</p>
   }
 
   return (
     <section>
-      <Link className="text-sm text-teal-800 underline" to={supplierId ? `/suppliers/${supplierId}` : "/suppliers"}>
+      <Link className="text-sm link" to={supplierId ? `/suppliers/${supplierId}` : "/suppliers"}>
         Back
       </Link>
-      <h1 className="mt-2 mb-4 text-2xl font-semibold text-stone-900">{supplierId ? "Edit supplier" : "New supplier"}</h1>
+      <h1 className="mt-2 mb-4 page-title">{supplierId ? "Edit supplier" : "New supplier"}</h1>
       <OrganizationForm defaultValues={supplier.data} submitLabel="Save supplier" onSubmit={onSubmit} />
     </section>
   )

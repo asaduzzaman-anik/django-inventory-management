@@ -33,13 +33,13 @@ export function LoginPage() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div>
-        <h1 className="text-2xl font-semibold text-stone-900">Sign in</h1>
-        <p className="mt-1 text-sm text-stone-600">Inventory and warehouse management</p>
+    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <div className="mb-2">
+        <h1 className="mb-2 text-title-sm font-semibold text-gray-700">Sign in</h1>
+        <p className="text-sm text-gray-500">Enter your username and password to sign in.</p>
       </div>
       {formError ? (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+        <p className="alert alert-danger text-sm" role="alert">
           {formError}
         </p>
       ) : null}
@@ -51,7 +51,7 @@ export function LoginPage() {
         error={errors.password?.message}
         {...register("password")}
       />
-      <Button type="submit" disabled={isSubmitting}>
+      <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Signing in…" : "Sign in"}
       </Button>
     </form>

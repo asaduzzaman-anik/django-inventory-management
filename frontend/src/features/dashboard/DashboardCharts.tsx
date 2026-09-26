@@ -3,6 +3,8 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } 
 
 import type { Dashboard } from "./types.ts"
 
+const CHART = "#635bff"
+
 export function DashboardCharts({ data }: { data: Dashboard }) {
   const warehouseValue = data.stock_value_by_warehouse.map((row) => ({
     code: row.code,
@@ -22,11 +24,11 @@ export function DashboardCharts({ data }: { data: Dashboard }) {
       <Chart title="Stock value by warehouse">
         {warehouseValue.length ? (
           <BarChart width={320} height={220} data={warehouseValue}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="code" />
-            <YAxis />
+            <CartesianGrid stroke="#e4e7ec" strokeDasharray="3 3" />
+            <XAxis dataKey="code" stroke="#98a2b3" />
+            <YAxis stroke="#98a2b3" />
             <Tooltip />
-            <Bar dataKey="value" fill="#115e59" />
+            <Bar dataKey="value" fill={CHART} radius={[4, 4, 0, 0]} />
           </BarChart>
         ) : (
           <EmptyChart />
@@ -35,11 +37,11 @@ export function DashboardCharts({ data }: { data: Dashboard }) {
       <Chart title="Daily movement">
         {movements.length ? (
           <LineChart width={320} height={220} data={movements}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
+            <CartesianGrid stroke="#e4e7ec" strokeDasharray="3 3" />
+            <XAxis dataKey="date" stroke="#98a2b3" />
+            <YAxis stroke="#98a2b3" />
             <Tooltip />
-            <Line dataKey="quantity" stroke="#115e59" dot={false} />
+            <Line dataKey="quantity" stroke={CHART} strokeWidth={2} dot={false} />
           </LineChart>
         ) : (
           <EmptyChart />
@@ -47,11 +49,11 @@ export function DashboardCharts({ data }: { data: Dashboard }) {
       </Chart>
       <Chart title="Sales and purchases">
         <BarChart width={320} height={220} data={totals}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="label" />
-          <YAxis />
+          <CartesianGrid stroke="#e4e7ec" strokeDasharray="3 3" />
+          <XAxis dataKey="label" stroke="#98a2b3" />
+          <YAxis stroke="#98a2b3" />
           <Tooltip />
-          <Bar dataKey="total" fill="#115e59" />
+          <Bar dataKey="total" fill={CHART} radius={[4, 4, 0, 0]} />
         </BarChart>
       </Chart>
     </div>
@@ -60,13 +62,15 @@ export function DashboardCharts({ data }: { data: Dashboard }) {
 
 function Chart({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="overflow-x-auto rounded-md border border-stone-200 bg-white p-4">
-      <h2 className="mb-3 text-sm font-medium text-stone-800">{title}</h2>
-      {children}
+    <section className="card overflow-x-auto">
+      <div className="card-header">
+        <h2 className="card-title text-sm">{title}</h2>
+      </div>
+      <div className="card-body">{children}</div>
     </section>
   )
 }
 
 function EmptyChart() {
-  return <p className="text-sm text-stone-500">No figures in this range.</p>
+  return <p className="text-sm text-gray-500">No figures in this range.</p>
 }

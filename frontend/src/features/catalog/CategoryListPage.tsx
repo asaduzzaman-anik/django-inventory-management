@@ -7,6 +7,7 @@ import { api, toast } from "../../api/client.ts"
 import { fetchPage } from "../../api/paging.ts"
 import { ListFilters } from "../../components/ListFilters.tsx"
 import { QueryState } from "../../components/QueryState.tsx"
+import { Badge } from "../../components/ui/Badge.tsx"
 import { Button } from "../../components/ui/Button.tsx"
 import { Checkbox } from "../../components/ui/Checkbox.tsx"
 import { Input } from "../../components/ui/Input.tsx"
@@ -65,7 +66,7 @@ export function CategoryListPage() {
 
   return (
     <section>
-      <h1 className="mb-4 text-2xl font-semibold text-stone-900">Categories</h1>
+      <h1 className="mb-4 page-title">Categories</h1>
       <ListFilters
         search={list.search}
         onSearch={list.setSearch}
@@ -96,13 +97,13 @@ export function CategoryListPage() {
             { key: "name", header: "Name", sortKey: "name", render: (row) => row.name },
             { key: "slug", header: "Slug", render: (row) => row.slug },
             { key: "parent", header: "Parent", render: (row) => row.parent_name ?? "—" },
-            { key: "active", header: "Status", render: (row) => (row.is_active ? "Active" : "Inactive") },
+            { key: "active", header: "Status", render: (row) => <Badge>{row.is_active ? "Active" : "Inactive"}</Badge> },
             {
               key: "edit",
               header: "",
               render: (row) =>
                 canChange ? (
-                  <button type="button" className="text-teal-800 underline" onClick={() => setEditing(row)}>
+                  <button type="button" className="link" onClick={() => setEditing(row)}>
                     Edit
                   </button>
                 ) : null,
@@ -170,7 +171,7 @@ function CategoryModal({
           }
         })}
       >
-        {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+        {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
         <Input label="Name" error={errors.name?.message} {...register("name")} />
         <Input label="Slug" error={errors.slug?.message} {...register("slug")} />
         <Select label="Parent" error={errors.parent?.message} {...register("parent")}>

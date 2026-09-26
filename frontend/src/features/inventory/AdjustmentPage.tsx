@@ -85,12 +85,12 @@ export function AdjustmentPage() {
 
   return (
     <section>
-      <Link className="text-sm text-teal-800 underline" to="/inventory">
+      <Link className="text-sm link" to="/inventory">
         Inventory
       </Link>
-      <h1 className="mb-4 mt-2 text-2xl font-semibold text-stone-900">Adjust stock</h1>
-      <form className="max-w-xl space-y-4" noValidate onSubmit={handleSubmit(review)}>
-        {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      <h1 className="mb-4 mt-2 page-title">Adjust stock</h1>
+      <form className="card card-body max-w-3xl space-y-5" noValidate onSubmit={handleSubmit(review)}>
+        {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
         <Select label="Warehouse" error={errors.warehouse?.message} {...register("warehouse")}>
           <option value="">Choose a warehouse</option>
           {(warehouses.data?.results ?? []).map((item) => (
@@ -107,9 +107,9 @@ export function AdjustmentPage() {
             </option>
           ))}
         </Select>
-        <p className="text-sm text-stone-600">Available: {available}</p>
+        <p className="text-sm text-gray-500">Available: {available}</p>
         <Input label="Quantity change" error={errors.quantity_change?.message} {...register("quantity_change")} />
-        <p className="text-sm text-stone-500">Use a negative number to remove stock.</p>
+        <p className="text-sm text-gray-500">Use a negative number to remove stock.</p>
         <Select label="Reason" error={errors.reason?.message} {...register("reason")}>
           {ADJUSTMENT_REASONS.map(([value, label]) => (
             <option key={value} value={value}>

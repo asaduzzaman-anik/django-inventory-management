@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react"
 
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
+import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
 import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
@@ -84,7 +85,7 @@ export function InventoryReportPage() {
             { key: "on_hand", header: "On hand", render: (row) => row.on_hand },
             { key: "reserved", header: "Reserved", render: (row) => row.reserved },
             { key: "available", header: "Available", render: (row) => row.available },
-            { key: "status", header: "Status", render: (row) => stockStatusLabel(row.status) },
+            { key: "status", header: "Status", render: (row) => <Badge>{stockStatusLabel(row.status)}</Badge> },
             { key: "value", header: "Value", render: (row) => row.value },
           ]}
         />

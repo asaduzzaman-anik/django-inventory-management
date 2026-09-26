@@ -30,7 +30,7 @@ export function OrganizationForm({
 
   return (
     <form
-      className="max-w-xl space-y-4"
+      className="card card-body max-w-3xl space-y-5"
       noValidate
       onSubmit={handleSubmit(async (values) => {
         setBanner("")
@@ -42,7 +42,7 @@ export function OrganizationForm({
         }
       })}
     >
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <Input label="Name" error={errors.name?.message} {...register("name")} />
       <Input label="Code" error={errors.code?.message} {...register("code")} />
       <Input label="Email" type="email" error={errors.email?.message} {...register("email")} />

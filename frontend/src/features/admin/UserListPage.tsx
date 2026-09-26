@@ -4,7 +4,9 @@ import { Link } from "react-router-dom"
 
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
+import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
+import { SearchField } from "../../components/ui/SearchField.tsx"
 import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { AdminNav } from "./adminNav.tsx"
@@ -45,21 +47,14 @@ export function UserListPage() {
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold text-stone-900">Users</h1>
-        <Link className="inline-block rounded-md bg-teal-800 px-4 py-2 text-sm font-medium text-white" to="/admin/users/new">
+        <h1 className="page-title">Users</h1>
+        <Link className="btn-primary" to="/admin/users/new">
           New user
         </Link>
       </div>
       <AdminNav />
-      <div className="flex flex-wrap items-end gap-3">
-        <label className="block text-sm">
-          <span className="font-medium text-stone-700">Search</span>
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="mt-1 w-56 rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none focus:border-teal-800"
-          />
-        </label>
+      <div className="filter-toolbar">
+        <SearchField value={search} onChange={setSearch} />
         <div className="w-52">
           <Select label="Role" value={role} onChange={(event) => { setRole(event.target.value); setPage(1) }}>
             <option value="">All</option>
@@ -92,14 +87,14 @@ export function UserListPage() {
               key: "username",
               header: "Username",
               render: (row) => (
-                <Link className="text-teal-800 underline" to={`/admin/users/${row.id}`}>
+                <Link className="link" to={`/admin/users/${row.id}`}>
                   {row.username}
                 </Link>
               ),
             },
             { key: "email", header: "Email", render: (row) => row.email },
             { key: "role", header: "Role", render: (row) => row.role ?? "—" },
-            { key: "active", header: "Status", render: (row) => (row.is_active ? "Active" : "Inactive") },
+            { key: "active", header: "Status", render: (row) => <Badge>{row.is_active ? "Active" : "Inactive"}</Badge> },
           ]}
         />
         <Pagination page={page} count={query.data?.count ?? 0} onPage={setPage} />

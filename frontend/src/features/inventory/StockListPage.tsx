@@ -4,7 +4,9 @@ import { Link } from "react-router-dom"
 
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
+import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
+import { SearchField } from "../../components/ui/SearchField.tsx"
 import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import type { Category } from "../catalog/types.ts"
@@ -67,25 +69,18 @@ export function StockListPage() {
   return (
     <section>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold text-stone-900">Inventory</h1>
+        <h1 className="page-title">Inventory</h1>
         <div className="flex flex-wrap gap-2">
           {canReceive ? <ActionLink to="/inventory/receive">Receive</ActionLink> : null}
           {canTransfer ? <ActionLink to="/inventory/transfer">Transfer</ActionLink> : null}
           {canAdjust ? <ActionLink to="/inventory/adjust">Adjust</ActionLink> : null}
-          <Link className="inline-block rounded-md bg-white px-4 py-2 text-sm font-medium text-stone-800 ring-1 ring-stone-300" to="/inventory/transactions">
+          <Link className="btn-secondary" to="/inventory/transactions">
             History
           </Link>
         </div>
       </div>
-      <div className="mb-4 flex flex-wrap items-end gap-3">
-        <label className="block text-sm">
-          <span className="font-medium text-stone-700">Search</span>
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="mt-1 w-56 rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none focus:border-teal-800"
-          />
-        </label>
+      <div className="filter-toolbar">
+        <SearchField value={search} onChange={setSearch} />
         <div className="w-48">
           <Select label="Warehouse" value={warehouse} onChange={(event) => choose(setWarehouse, event.target.value)}>
             <option value="">All</option>
@@ -140,7 +135,7 @@ export function StockListPage() {
             { key: "on_hand", header: "On hand", sortKey: "on_hand", render: (row) => row.on_hand },
             { key: "reserved", header: "Reserved", render: (row) => row.reserved },
             { key: "available", header: "Available", sortKey: "available", render: (row) => row.available },
-            { key: "status", header: "Status", render: (row) => stockStatusLabel(row.status) },
+            { key: "status", header: "Status", render: (row) => <Badge>{stockStatusLabel(row.status)}</Badge> },
           ]}
         />
         <Pagination page={page} count={query.data?.count ?? 0} onPage={setPage} />
@@ -151,7 +146,7 @@ export function StockListPage() {
 
 function ActionLink({ to, children }: { to: string; children: string }) {
   return (
-    <Link className="inline-block rounded-md bg-teal-800 px-4 py-2 text-sm font-medium text-white" to={to}>
+    <Link className="btn-primary" to={to}>
       {children}
     </Link>
   )

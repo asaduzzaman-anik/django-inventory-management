@@ -91,7 +91,7 @@ export function UserDetailPage() {
     return <Spinner />
   }
   if (user.isError || !user.data) {
-    return <p className="text-sm text-red-800">Could not load this user.</p>
+    return <p className="text-sm text-error-700">Could not load this user.</p>
   }
 
   const item = user.data
@@ -99,15 +99,15 @@ export function UserDetailPage() {
 
   return (
     <section className="max-w-xl space-y-6">
-      <Link className="text-sm text-teal-800 underline" to="/admin/users">
+      <Link className="text-sm link" to="/admin/users">
         Users
       </Link>
       <div>
-        <h1 className="text-2xl font-semibold text-stone-900">{item.username}</h1>
-        <p className="text-sm text-stone-600">{item.is_active ? "Active" : "Inactive"} · {item.email}</p>
+        <h1 className="page-title">{item.username}</h1>
+        <p className="text-sm text-gray-500">{item.is_active ? "Active" : "Inactive"} · {item.email}</p>
       </div>
       <AdminNav />
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <div className="flex items-end gap-2">
         <div className="flex-1">
           <Select label="Role" value={selectedRole} onChange={(event) => setRole(event.target.value)}>
@@ -120,11 +120,12 @@ export function UserDetailPage() {
           Save role
         </Button>
       </div>
-      <fieldset className="space-y-2">
-        <legend className="text-sm font-medium text-stone-700">Warehouses</legend>
+      <fieldset className="card card-body space-y-3">
+        <legend className="card-title text-sm">Warehouses</legend>
         {(warehouses.data?.results ?? []).map((warehouse) => (
-          <label key={warehouse.id} className="flex items-center gap-2 text-sm text-stone-800">
+          <label key={warehouse.id} className="flex items-center gap-2 text-sm text-gray-800">
             <input
+              className="form-checkbox"
               type="checkbox"
               checked={selectedWarehouses.includes(warehouse.id)}
               onChange={(event) => {

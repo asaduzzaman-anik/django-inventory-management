@@ -30,13 +30,13 @@ export function SalesFormPage() {
     return <Spinner />
   }
   if (order.isError) {
-    return <p className="text-sm text-red-800">Could not load this sales order.</p>
+    return <p className="text-sm text-error-700">Could not load this sales order.</p>
   }
   if (order.data && order.data.status !== "DRAFT") {
     return (
-      <p className="text-sm text-stone-700">
+      <p className="text-sm text-gray-700">
         Only a draft sales order can be edited.{" "}
-        <Link className="text-teal-800 underline" to={`/sales/${order.data.id}`}>
+        <Link className="link" to={`/sales/${order.data.id}`}>
           Back to {order.data.number}
         </Link>
       </p>
@@ -110,11 +110,11 @@ function SalesDraft({ order, warehouses, products }: { order?: SalesOrder; wareh
 
   return (
     <section className="space-y-4">
-      <Link className="text-sm text-teal-800 underline" to={order ? `/sales/${order.id}` : "/sales"}>
+      <Link className="text-sm link" to={order ? `/sales/${order.id}` : "/sales"}>
         Back
       </Link>
-      <h1 className="text-2xl font-semibold text-stone-900">{order ? `Edit ${order.number}` : "New sales order"}</h1>
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      <h1 className="page-title">{order ? `Edit ${order.number}` : "New sales order"}</h1>
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
         <Select label="Warehouse" value={warehouse} onChange={(event) => setWarehouse(event.target.value)}>
           <option value="">Choose a warehouse</option>

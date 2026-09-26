@@ -46,7 +46,7 @@ export function ProductDetailPage() {
     return <Spinner />
   }
   if (product.isError || !product.data) {
-    return <p className="text-sm text-red-800">Could not load this product.</p>
+    return <p className="text-sm text-error-700">Could not load this product.</p>
   }
 
   const item = product.data
@@ -54,17 +54,17 @@ export function ProductDetailPage() {
     <section className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link className="text-sm text-teal-800 underline" to="/products">
+          <Link className="text-sm link" to="/products">
             Products
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold text-stone-900">
+          <h1 className="mt-2 page-title">
             {item.sku} {item.name}
           </h1>
-          <p className="text-sm text-stone-600">{item.is_active ? "Active" : "Inactive"}</p>
+          <p className="text-sm text-gray-500">{item.is_active ? "Active" : "Inactive"}</p>
         </div>
         {canChange ? (
           <div className="flex gap-2">
-            <Link className="rounded-md bg-white px-4 py-2 text-sm font-medium text-stone-800 ring-1 ring-stone-300" to={`/products/${item.id}/edit`}>
+            <Link className="btn-secondary" to={`/products/${item.id}/edit`}>
               Edit
             </Link>
             {item.is_active ? (
@@ -76,7 +76,7 @@ export function ProductDetailPage() {
         ) : null}
       </div>
       {item.image ? <img src={item.image} alt="" className="h-32 w-32 rounded object-cover" /> : null}
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="card card-body grid gap-4 text-sm sm:grid-cols-2">
         <Detail label="Category" value={item.category_name} />
         <Detail label="Supplier" value={item.preferred_supplier_name ?? "—"} />
         <Detail label="Barcode" value={item.barcode ?? "—"} />
@@ -85,11 +85,11 @@ export function ProductDetailPage() {
         <Detail label="Selling price" value={item.selling_price} />
         <Detail label="Reorder level" value={item.reorder_level} />
       </dl>
-      {item.description ? <p className="text-sm text-stone-700">{item.description}</p> : null}
+      {item.description ? <p className="text-sm text-gray-700">{item.description}</p> : null}
       {canStock ? (
         <div>
-          <h2 className="mb-2 text-lg font-medium text-stone-900">Stock by warehouse</h2>
-          {stock.isPending ? <Spinner /> : stock.isError ? <p className="text-sm text-red-800">Could not load stock.</p> : <StockTable rows={stock.data?.results ?? []} showProduct={false} />}
+          <h2 className="mb-2 section-title">Stock by warehouse</h2>
+          {stock.isPending ? <Spinner /> : stock.isError ? <p className="text-sm text-error-700">Could not load stock.</p> : <StockTable rows={stock.data?.results ?? []} showProduct={false} />}
         </div>
       ) : null}
       {confirming ? (
@@ -109,8 +109,8 @@ export function ProductDetailPage() {
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-stone-500">{label}</dt>
-      <dd className="text-stone-900">{value}</dd>
+      <dt className="text-gray-500">{label}</dt>
+      <dd className="text-gray-900">{value}</dd>
     </div>
   )
 }

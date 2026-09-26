@@ -44,15 +44,15 @@ export function ProductFormPage() {
     return <Spinner />
   }
   if (product.isError) {
-    return <p className="text-sm text-red-800">Could not load this product.</p>
+    return <p className="text-sm text-error-700">Could not load this product.</p>
   }
 
   return (
     <section>
-      <Link className="text-sm text-teal-800 underline" to={productId ? `/products/${productId}` : "/products"}>
+      <Link className="text-sm link" to={productId ? `/products/${productId}` : "/products"}>
         Back
       </Link>
-      <h1 className="mt-2 mb-4 text-2xl font-semibold text-stone-900">{productId ? "Edit product" : "New product"}</h1>
+      <h1 className="mt-2 mb-4 page-title">{productId ? "Edit product" : "New product"}</h1>
       <ProductForm
         categories={(categories.data?.results ?? []).filter(
           (category) => category.is_active || category.id === product.data?.category,

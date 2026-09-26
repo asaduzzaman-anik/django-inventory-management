@@ -56,7 +56,7 @@ export function ProductForm({
 
   return (
     <form
-      className="max-w-xl space-y-4"
+      className="card card-body max-w-3xl space-y-5"
       noValidate
       onSubmit={handleSubmit(async (values) => {
         if (imageError) {
@@ -75,7 +75,7 @@ export function ProductForm({
         }
       })}
     >
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <Input label="SKU" error={errors.sku?.message} {...register("sku")} />
       <Input label="Barcode" error={errors.barcode?.message} {...register("barcode")} />
       <Input label="Name" error={errors.name?.message} {...register("name")} />
@@ -107,15 +107,15 @@ export function ProductForm({
         ))}
       </Select>
       <label className="block text-sm">
-        <span className="font-medium text-stone-700">Image</span>
+        <span className="form-label">Image</span>
         {imageUrl ? <img src={imageUrl} alt="" className="mt-2 h-24 w-24 rounded object-cover" /> : null}
         <input
-          className="mt-1 block w-full text-sm"
+          className="form-control-file mt-1.5"
           type="file"
           accept="image/jpeg,image/png,image/webp"
           onChange={(event) => chooseImage(event.target.files?.[0] ?? null)}
         />
-        {imageError ? <span className="mt-1 block text-red-700">{imageError}</span> : null}
+        {imageError ? <span className="mt-1 block text-error-600">{imageError}</span> : null}
       </label>
       <Checkbox label="Active" {...register("is_active")} />
       <Button type="submit" disabled={isSubmitting}>

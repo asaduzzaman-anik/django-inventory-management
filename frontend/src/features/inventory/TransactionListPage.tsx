@@ -33,11 +33,11 @@ export function TransactionListPage() {
 
   return (
     <section>
-      <Link className="text-sm text-teal-800 underline" to="/inventory">
+      <Link className="text-sm link" to="/inventory">
         Inventory
       </Link>
-      <h1 className="mb-4 mt-2 text-2xl font-semibold text-stone-900">Transaction history</h1>
-      <div className="mb-4 flex flex-wrap items-end gap-3">
+      <h1 className="mb-4 mt-2 page-title">Transaction history</h1>
+      <div className="filter-toolbar">
         <div className="w-48">
           <Select label="Type" value={type} onChange={(event) => chooseType(event.target.value)}>
             <option value="">All</option>
@@ -49,7 +49,7 @@ export function TransactionListPage() {
           </Select>
         </div>
         <label className="block text-sm">
-          <span className="font-medium text-stone-700">From</span>
+          <span className="form-label">From</span>
           <input
             type="date"
             value={after}
@@ -57,11 +57,11 @@ export function TransactionListPage() {
               setAfter(event.target.value)
               setPage(1)
             }}
-            className="mt-1 rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none focus:border-teal-800"
+            className="form-control mt-1.5"
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-stone-700">To</span>
+          <span className="form-label">To</span>
           <input
             type="date"
             value={before}
@@ -69,7 +69,7 @@ export function TransactionListPage() {
               setBefore(event.target.value)
               setPage(1)
             }}
-            className="mt-1 rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none focus:border-teal-800"
+            className="form-control mt-1.5"
           />
         </label>
       </div>
@@ -100,7 +100,7 @@ export function TransactionListPage() {
                   return row.reference_code || "—"
                 }
                 return (
-                  <Link className="text-teal-800 underline" to={path}>
+                  <Link className="link" to={path}>
                     {row.reference_code}
                   </Link>
                 )

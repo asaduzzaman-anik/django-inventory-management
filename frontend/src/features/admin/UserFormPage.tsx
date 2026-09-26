@@ -54,13 +54,13 @@ export function UserFormPage() {
   }
 
   return (
-    <section className="max-w-xl space-y-4">
-      <Link className="text-sm text-teal-800 underline" to="/admin/users">
+    <section className="card card-body max-w-3xl space-y-5">
+      <Link className="text-sm link" to="/admin/users">
         Users
       </Link>
-      <h1 className="text-2xl font-semibold text-stone-900">New user</h1>
+      <h1 className="page-title">New user</h1>
       <AdminNav />
-      {banner ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{banner}</p> : null}
+      {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <Input label="Username" value={username} error={errors.username} onChange={(event) => setUsername(event.target.value)} />
       <Input label="Email" type="email" value={email} error={errors.email} onChange={(event) => setEmail(event.target.value)} />
       <Input label="Password" type="password" value={password} error={errors.password} onChange={(event) => setPassword(event.target.value)} />
@@ -72,7 +72,7 @@ export function UserFormPage() {
           <option key={name} value={name}>{name}</option>
         ))}
       </Select>
-      {errors.role ? <p className="text-sm text-red-700">{errors.role}</p> : null}
+      {errors.role ? <p className="text-sm text-error-600">{errors.role}</p> : null}
       <Button type="button" disabled={pending} onClick={save}>
         {pending ? "Saving…" : "Create user"}
       </Button>

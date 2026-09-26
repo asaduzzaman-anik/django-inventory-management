@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { fetchPage } from "../../api/paging.ts"
 import { ListFilters } from "../../components/ListFilters.tsx"
 import { QueryState } from "../../components/QueryState.tsx"
+import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { useListState } from "../../hooks/useListState.ts"
@@ -27,7 +28,7 @@ export function ProductListPage() {
 
   return (
     <section>
-      <h1 className="mb-4 text-2xl font-semibold text-stone-900">Products</h1>
+      <h1 className="mb-4 page-title">Products</h1>
       <ListFilters
         search={list.search}
         onSearch={list.setSearch}
@@ -35,7 +36,7 @@ export function ProductListPage() {
         onActive={list.setActive}
         action={
           canAdd ? (
-            <Link className="inline-block rounded-md bg-teal-800 px-4 py-2 text-sm font-medium text-white" to="/products/new">
+            <Link className="btn-primary" to="/products/new">
               New product
             </Link>
           ) : null
@@ -60,7 +61,7 @@ export function ProductListPage() {
               header: "SKU",
               sortKey: "sku",
               render: (row) => (
-                <Link className="text-teal-800 underline" to={`/products/${row.id}`}>
+                <Link className="link" to={`/products/${row.id}`}>
                   {row.sku}
                 </Link>
               ),
@@ -68,7 +69,7 @@ export function ProductListPage() {
             { key: "name", header: "Name", sortKey: "name", render: (row) => row.name },
             { key: "category", header: "Category", render: (row) => row.category_name },
             { key: "price", header: "Selling price", render: (row) => row.selling_price },
-            { key: "active", header: "Status", render: (row) => (row.is_active ? "Active" : "Inactive") },
+            { key: "active", header: "Status", render: (row) => <Badge>{row.is_active ? "Active" : "Inactive"}</Badge> },
           ]}
         />
         <Pagination page={list.page} count={query.data?.count ?? 0} onPage={list.setPage} />

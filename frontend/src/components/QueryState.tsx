@@ -26,11 +26,13 @@ export function QueryState({
   }
   if (isError) {
     return (
-      <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-800">
-        <p>Could not load this list.</p>
-        <Button className="mt-3" type="button" onClick={onRetry}>
-          Retry
-        </Button>
+      <div className="alert alert-danger text-sm">
+        <div>
+          <p>Could not load this list.</p>
+          <Button className="mt-3" type="button" onClick={onRetry}>
+            Retry
+          </Button>
+        </div>
       </div>
     )
   }

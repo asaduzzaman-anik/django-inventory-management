@@ -32,8 +32,8 @@ export function ChangePasswordPage() {
 
   return (
     <section className="max-w-lg space-y-4">
-      <h1 className="text-2xl font-semibold text-stone-900">Change password</h1>
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <h1 className="page-title">Change password</h1>
+      <form className="card card-body space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Input
           label="Current password"
           type="password"

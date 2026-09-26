@@ -17,20 +17,20 @@ export function TransferDetailPage() {
     return <Spinner />
   }
   if (transfer.isError || !transfer.data) {
-    return <p className="text-sm text-red-800">Could not load this transfer.</p>
+    return <p className="text-sm text-error-700">Could not load this transfer.</p>
   }
 
   const item = transfer.data
   return (
     <section className="space-y-6">
       <div>
-        <Link className="text-sm text-teal-800 underline" to="/inventory">
+        <Link className="text-sm link" to="/inventory">
           Inventory
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold text-stone-900">{item.number}</h1>
-        <p className="text-sm text-stone-600">Transfer</p>
+        <h1 className="mt-2 page-title">{item.number}</h1>
+        <p className="text-sm text-gray-500">Transfer</p>
       </div>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="card card-body grid gap-4 text-sm sm:grid-cols-2">
         <Field label="From" value={item.source_warehouse_code} />
         <Field label="To" value={item.destination_warehouse_code} />
         <Field label="Posted" value={formatWhen(item.created_at)} />
@@ -52,8 +52,8 @@ export function TransferDetailPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-stone-500">{label}</dt>
-      <dd className="text-stone-900">{value}</dd>
+      <dt className="text-gray-500">{label}</dt>
+      <dd className="text-gray-900">{value}</dd>
     </div>
   )
 }

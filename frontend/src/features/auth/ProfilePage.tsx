@@ -39,13 +39,13 @@ export function ProfilePage() {
   return (
     <section className="max-w-lg space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold text-stone-900">Profile</h1>
-        <p className="mt-1 text-sm text-stone-600">
+        <h1 className="page-title">Profile</h1>
+        <p className="mt-1 text-sm text-gray-500">
           {user?.username}
           {user?.role ? ` · ${user.role}` : ""}
         </p>
       </div>
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form className="card card-body space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Input label="Email" type="email" autoComplete="email" error={errors.email?.message} {...register("email")} />
         <Input label="First name" autoComplete="given-name" error={errors.first_name?.message} {...register("first_name")} />
         <Input label="Last name" autoComplete="family-name" error={errors.last_name?.message} {...register("last_name")} />
@@ -54,7 +54,7 @@ export function ProfilePage() {
           {isSubmitting ? "Saving…" : "Save profile"}
         </Button>
       </form>
-      <Link className="inline-block text-sm text-teal-800 underline" to="/change-password">
+      <Link className="inline-block text-sm link" to="/change-password">
         Change password
       </Link>
     </section>

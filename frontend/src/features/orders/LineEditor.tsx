@@ -29,7 +29,7 @@ export function LineEditor({
   return (
     <div className="space-y-3">
       {lines.map((line, index) => (
-        <div key={line.key} className="grid gap-3 rounded-md border border-stone-200 bg-white p-3 sm:grid-cols-2">
+        <div key={line.key} className="grid gap-3 rounded-lg border border-gray-200 bg-white shadow-theme-xs p-3 sm:grid-cols-2">
           <Select
             label="Product"
             value={line.product}
@@ -70,7 +70,7 @@ function Available({ warehouseId, productId, quantity }: { warehouseId: string; 
   const available = useAvailableStock(warehouseId, productId)
   const short = available !== "—" && available !== "Loading…" && available !== "Unavailable" && Number(quantity) > Number(available)
   return (
-    <p className={`self-end text-sm ${short ? "text-red-700" : "text-stone-600"}`}>
+    <p className={`self-end text-sm ${short ? "text-error-600" : "text-gray-500"}`}>
       Available: {available}
       {short ? ". More than available." : ""}
     </p>
