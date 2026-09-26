@@ -6,8 +6,8 @@ import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { SearchField } from "../../components/ui/SearchField.tsx"
-import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import type { Category } from "../catalog/types.ts"
 import { useCan } from "../auth/useCan.ts"
@@ -81,35 +81,25 @@ export function StockListPage() {
       </div>
       <div className="filter-toolbar">
         <SearchField value={search} onChange={setSearch} />
-        <div className="w-48">
-          <Select label="Warehouse" value={warehouse} onChange={(event) => choose(setWarehouse, event.target.value)}>
-            <option value="">All</option>
-            {(warehouses.data?.results ?? []).map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.code} {item.name}
-              </option>
-            ))}
-          </Select>
-        </div>
-        <div className="w-48">
-          <Select label="Category" value={category} onChange={(event) => choose(setCategory, event.target.value)}>
-            <option value="">All</option>
-            {(categories.data?.results ?? []).map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-        </div>
-        <div className="w-40">
-          <Select label="Status" value={status} onChange={(event) => choose(setStatus, event.target.value)}>
-            <option value="">All</option>
-            {STOCK_STATUSES.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Select>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <FilterDropdown
+            label="Warehouse"
+            value={warehouse}
+            onChange={(value) => choose(setWarehouse, value)}
+            options={(warehouses.data?.results ?? []).map((item) => ({ value: String(item.id), label: `${item.code} ${item.name}` }))}
+          />
+          <FilterDropdown
+            label="Category"
+            value={category}
+            onChange={(value) => choose(setCategory, value)}
+            options={(categories.data?.results ?? []).map((item) => ({ value: String(item.id), label: item.name }))}
+          />
+          <FilterDropdown
+            label="Status"
+            value={status}
+            onChange={(value) => choose(setStatus, value)}
+            options={STOCK_STATUSES.map(([value, label]) => ({ value, label }))}
+          />
         </div>
       </div>
       <QueryState

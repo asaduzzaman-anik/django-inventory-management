@@ -3,9 +3,9 @@ import { useState } from "react"
 
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
-import { Input } from "../../components/ui/Input.tsx"
+import { DateRangePicker } from "../../components/ui/DateRangePicker.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
-import { Select } from "../../components/ui/Select.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { TRANSACTION_TYPES, formatWhen, transactionLabel } from "../inventory/types.ts"
 import type { Warehouse } from "../warehouses/types.ts"
@@ -52,26 +52,29 @@ export function MovementReportPage() {
       exportName="stock-movements"
       params={params}
       filters={
-        <>
-          <div className="w-52">
-            <Select label="Warehouse" value={warehouse} onChange={(event) => { setWarehouse(event.target.value); setPage(1) }}>
-              <option value="">All</option>
-              {(warehouses.data?.results ?? []).map((row) => (
-                <option key={row.id} value={row.id}>{row.code} {row.name}</option>
-              ))}
-            </Select>
-          </div>
-          <div className="w-52">
-            <Select label="Type" value={type} onChange={(event) => { setType(event.target.value); setPage(1) }}>
-              <option value="">All</option>
-              {TRANSACTION_TYPES.map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
-              ))}
-            </Select>
-          </div>
-          <Input label="From" type="date" value={createdAfter} onChange={(event) => { setCreatedAfter(event.target.value); setPage(1) }} />
-          <Input label="To" type="date" value={createdBefore} onChange={(event) => { setCreatedBefore(event.target.value); setPage(1) }} />
-        </>
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+          <FilterDropdown
+            label="Warehouse"
+            value={warehouse}
+            onChange={(value) => { setWarehouse(value); setPage(1) }}
+            options={(warehouses.data?.results ?? []).map((row) => ({ value: String(row.id), label: `${row.code} ${row.name}` }))}
+          />
+          <FilterDropdown
+            label="Type"
+            value={type}
+            onChange={(value) => { setType(value); setPage(1) }}
+            options={TRANSACTION_TYPES.map(([value, label]) => ({ value, label }))}
+          />
+          <DateRangePicker
+            start={createdAfter}
+            end={createdBefore}
+            onChange={(start, end) => {
+              setCreatedAfter(start)
+              setCreatedBefore(end)
+              setPage(1)
+            }}
+          />
+        </div>
       }
     >
       <QueryState

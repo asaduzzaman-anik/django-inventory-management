@@ -5,7 +5,8 @@ import { Link } from "react-router-dom"
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
-import { Select } from "../../components/ui/Select.tsx"
+import { DateRangePicker } from "../../components/ui/DateRangePicker.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { documentPath, formatWhen, TRANSACTION_TYPES, transactionLabel, type InventoryTransaction } from "./types.ts"
 
@@ -38,40 +39,21 @@ export function TransactionListPage() {
       </Link>
       <h1 className="mb-4 mt-2 page-title">Transaction history</h1>
       <div className="filter-toolbar">
-        <div className="w-48">
-          <Select label="Type" value={type} onChange={(event) => chooseType(event.target.value)}>
-            <option value="">All</option>
-            {TRANSACTION_TYPES.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Select>
-        </div>
-        <label className="block text-sm">
-          <span className="form-label">From</span>
-          <input
-            type="date"
-            value={after}
-            onChange={(event) => {
-              setAfter(event.target.value)
-              setPage(1)
-            }}
-            className="form-control mt-1.5"
-          />
-        </label>
-        <label className="block text-sm">
-          <span className="form-label">To</span>
-          <input
-            type="date"
-            value={before}
-            onChange={(event) => {
-              setBefore(event.target.value)
-              setPage(1)
-            }}
-            className="form-control mt-1.5"
-          />
-        </label>
+        <FilterDropdown
+          label="Type"
+          value={type}
+          onChange={chooseType}
+          options={TRANSACTION_TYPES.map(([value, label]) => ({ value, label }))}
+        />
+        <DateRangePicker
+          start={after}
+          end={before}
+          onChange={(nextStart, nextEnd) => {
+            setAfter(nextStart)
+            setBefore(nextEnd)
+            setPage(1)
+          }}
+        />
       </div>
       <QueryState
         isPending={query.isPending}

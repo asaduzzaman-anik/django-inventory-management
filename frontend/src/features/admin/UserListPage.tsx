@@ -6,8 +6,8 @@ import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { SearchField } from "../../components/ui/SearchField.tsx"
-import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { AdminNav } from "./adminNav.tsx"
 import { ROLES, type AdminUser } from "./types.ts"
@@ -55,20 +55,22 @@ export function UserListPage() {
       <AdminNav />
       <div className="filter-toolbar">
         <SearchField value={search} onChange={setSearch} />
-        <div className="w-52">
-          <Select label="Role" value={role} onChange={(event) => { setRole(event.target.value); setPage(1) }}>
-            <option value="">All</option>
-            {ROLES.map((name) => (
-              <option key={name} value={name}>{name}</option>
-            ))}
-          </Select>
-        </div>
-        <div className="w-40">
-          <Select label="Status" value={active} onChange={(event) => { setActive(event.target.value); setPage(1) }}>
-            <option value="">All</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </Select>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <FilterDropdown
+            label="Role"
+            value={role}
+            onChange={(value) => { setRole(value); setPage(1) }}
+            options={ROLES.map((name) => ({ value: name, label: name }))}
+          />
+          <FilterDropdown
+            label="Status"
+            value={active}
+            onChange={(value) => { setActive(value); setPage(1) }}
+            options={[
+              { value: "true", label: "Active" },
+              { value: "false", label: "Inactive" },
+            ]}
+          />
         </div>
       </div>
       <QueryState

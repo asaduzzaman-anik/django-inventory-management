@@ -1,11 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useState, type ReactNode } from "react"
+import { useState } from "react"
 
 import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Badge } from "../../components/ui/Badge.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
-import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import type { Category } from "../catalog/types.ts"
 import { STOCK_STATUSES, stockStatusLabel } from "../inventory/types.ts"
@@ -46,26 +46,26 @@ export function InventoryReportPage() {
 
   return (
     <ReportFrame title="Inventory report" exportName="inventory" params={params} filters={
-      <>
-        <FilterSelect label="Warehouse" value={warehouse} onChange={(value) => { setWarehouse(value); setPage(1) }}>
-          <option value="">All</option>
-          {(warehouses.data?.results ?? []).map((row) => (
-            <option key={row.id} value={row.id}>{row.code} {row.name}</option>
-          ))}
-        </FilterSelect>
-        <FilterSelect label="Category" value={category} onChange={(value) => { setCategory(value); setPage(1) }}>
-          <option value="">All</option>
-          {(categories.data?.results ?? []).map((row) => (
-            <option key={row.id} value={row.id}>{row.name}</option>
-          ))}
-        </FilterSelect>
-        <FilterSelect label="Status" value={status} onChange={(value) => { setStatus(value); setPage(1) }}>
-          <option value="">All</option>
-          {STOCK_STATUSES.map(([value, label]) => (
-            <option key={value} value={value}>{label}</option>
-          ))}
-        </FilterSelect>
-      </>
+      <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+        <FilterDropdown
+          label="Warehouse"
+          value={warehouse}
+          onChange={(value) => { setWarehouse(value); setPage(1) }}
+          options={(warehouses.data?.results ?? []).map((row) => ({ value: String(row.id), label: `${row.code} ${row.name}` }))}
+        />
+        <FilterDropdown
+          label="Category"
+          value={category}
+          onChange={(value) => { setCategory(value); setPage(1) }}
+          options={(categories.data?.results ?? []).map((row) => ({ value: String(row.id), label: row.name }))}
+        />
+        <FilterDropdown
+          label="Status"
+          value={status}
+          onChange={(value) => { setStatus(value); setPage(1) }}
+          options={STOCK_STATUSES.map(([value, label]) => ({ value, label }))}
+        />
+      </div>
     }>
       <QueryState
         isPending={query.isPending}
@@ -92,25 +92,5 @@ export function InventoryReportPage() {
         <Pagination page={page} count={query.data?.count ?? 0} onPage={setPage} />
       </QueryState>
     </ReportFrame>
-  )
-}
-
-function FilterSelect({
-  label,
-  value,
-  onChange,
-  children,
-}: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  children: ReactNode
-}) {
-  return (
-    <div className="w-52">
-      <Select label={label} value={value} onChange={(event) => onChange(event.target.value)}>
-        {children}
-      </Select>
-    </div>
   )
 }

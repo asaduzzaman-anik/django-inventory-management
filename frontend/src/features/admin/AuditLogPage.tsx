@@ -5,7 +5,8 @@ import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Input } from "../../components/ui/Input.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
-import { Select } from "../../components/ui/Select.tsx"
+import { DateRangePicker } from "../../components/ui/DateRangePicker.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { formatWhen } from "../inventory/types.ts"
 import { AdminNav } from "./adminNav.tsx"
@@ -35,17 +36,22 @@ export function AuditLogPage() {
       <h1 className="page-title">Audit log</h1>
       <AdminNav />
       <div className="filter-toolbar">
-        <div className="w-48">
-          <Select label="Action" value={action} onChange={(event) => { setAction(event.target.value); setPage(1) }}>
-            <option value="">All</option>
-            {AUDIT_ACTIONS.map((value) => (
-              <option key={value} value={value}>{value}</option>
-            ))}
-          </Select>
-        </div>
+        <FilterDropdown
+          label="Action"
+          value={action}
+          onChange={(value) => { setAction(value); setPage(1) }}
+          options={AUDIT_ACTIONS.map((value) => ({ value, label: value }))}
+        />
         <Input label="Entity type" value={entityType} onChange={(event) => { setEntityType(event.target.value); setPage(1) }} />
-        <Input label="From" type="date" value={createdAfter} onChange={(event) => { setCreatedAfter(event.target.value); setPage(1) }} />
-        <Input label="To" type="date" value={createdBefore} onChange={(event) => { setCreatedBefore(event.target.value); setPage(1) }} />
+        <DateRangePicker
+          start={createdAfter}
+          end={createdBefore}
+          onChange={(start, end) => {
+            setCreatedAfter(start)
+            setCreatedBefore(end)
+            setPage(1)
+          }}
+        />
       </div>
       <QueryState
         isPending={query.isPending}

@@ -6,8 +6,8 @@ import { fetchPage } from "../../api/paging.ts"
 import { QueryState } from "../../components/QueryState.tsx"
 import { Badge } from "../../components/ui/Badge.tsx"
 import { Pagination } from "../../components/ui/Pagination.tsx"
+import { FilterDropdown } from "../../components/ui/FilterDropdown.tsx"
 import { SearchField } from "../../components/ui/SearchField.tsx"
-import { Select } from "../../components/ui/Select.tsx"
 import { Table } from "../../components/ui/Table.tsx"
 import { useCan } from "../auth/useCan.ts"
 import { PO_STATUSES, purchaseStatusLabel, type PurchaseOrder } from "./types.ts"
@@ -55,23 +55,15 @@ export function PurchaseListPage() {
       </div>
       <div className="filter-toolbar">
         <SearchField value={search} onChange={setSearch} />
-        <div className="w-52">
-          <Select
-            label="Status"
-            value={status}
-            onChange={(event) => {
-              setStatus(event.target.value)
-              setPage(1)
-            }}
-          >
-            <option value="">All</option>
-            {PO_STATUSES.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Select>
-        </div>
+        <FilterDropdown
+          label="Status"
+          value={status}
+          onChange={(value) => {
+            setStatus(value)
+            setPage(1)
+          }}
+          options={PO_STATUSES.map(([value, label]) => ({ value, label }))}
+        />
       </div>
       <QueryState
         isPending={query.isPending}
