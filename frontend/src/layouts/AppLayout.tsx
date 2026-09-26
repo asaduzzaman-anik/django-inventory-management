@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
+import { MdMenuOpen } from "react-icons/md"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 
+import logo from "../assets/logo.svg?raw"
 import { setSessionHandlers } from "../api/client.ts"
 import { Toast } from "../components/Toast.tsx"
 import { useAuth } from "../features/auth/AuthContext.tsx"
@@ -26,6 +28,7 @@ export function AppLayout() {
   const [message, setMessage] = useState("")
   const [collapsed, setCollapsed] = useState(() => window.localStorage.getItem("sidebarCollapsed") === "true")
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [desktop, setDesktop] = useState(() => window.matchMedia("(min-width: 1024px)").matches)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -49,6 +52,13 @@ export function AppLayout() {
   }, [message])
 
   useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)")
+    const onChange = () => setDesktop(media.matches)
+    media.addEventListener("change", onChange)
+    return () => media.removeEventListener("change", onChange)
+  }, [])
+
+  useEffect(() => {
     function onPointerDown(event: MouseEvent) {
       if (!menuRef.current?.contains(event.target as Node)) {
         setMenuOpen(false)
@@ -60,6 +70,7 @@ export function AppLayout() {
 
   const displayName = [user?.first_name, user?.last_name].filter(Boolean).join(" ") || user?.username || "User"
   const initial = displayName.slice(0, 1).toUpperCase()
+  const sidebarExpanded = desktop ? !collapsed : mobileOpen
 
   async function onLogout() {
     await logout()
@@ -93,13 +104,15 @@ export function AppLayout() {
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } ${collapsed ? "app-sidebar-minified lg:w-[85px]" : "lg:w-[290px]"}`}
       >
-        <div className="flex h-[100px] items-center justify-center px-6 py-5">
-          <NavLink to="/" className="text-xl font-bold text-primary" onClick={() => setMobileOpen(false)}>
-            {collapsed ? "I" : "Inventory"}
+        <div className="flex h-[100px] items-center justify-center px-4 py-5">
+          <NavLink to="/" className="inline-flex" aria-label="Inventory" onClick={() => setMobileOpen(false)}>
+            <span
+              className={`block overflow-hidden ${sidebarExpanded ? "h-10 w-[188px]" : "size-10"}`}
+              dangerouslySetInnerHTML={{ __html: logo }}
+            />
           </NavLink>
         </div>
         <div className="no-scrollbar flex flex-1 flex-col overflow-y-auto px-4">
-          <h3 className="menu-group-heading mb-4 px-5 text-xs font-medium tracking-wide text-gray-500 uppercase">Menu</h3>
           <ul className="mb-6 flex flex-col space-y-1">
             {NAV_ITEMS.filter((item) => user && canSee(user, item.permission)).map((item) => (
               <li key={item.to}>
@@ -126,12 +139,11 @@ export function AppLayout() {
             <button
               type="button"
               className="flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100"
-              aria-label="Toggle sidebar"
+              aria-label={sidebarExpanded ? "Close menu" : "Open menu"}
+              aria-expanded={sidebarExpanded}
               onClick={toggleSidebar}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
-              </svg>
+              <MdMenuOpen aria-hidden="true" size={26} className={sidebarExpanded ? undefined : "-scale-x-100"} />
             </button>
           </div>
           <div className="flex items-center gap-1 px-3 lg:px-0">
