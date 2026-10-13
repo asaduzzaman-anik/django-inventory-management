@@ -28,19 +28,19 @@ export function WarehouseListPage() {
 
   return (
     <section>
-      <h1 className="mb-4 page-title">Warehouses</h1>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="page-title">Warehouses</h1>
+        {canAdd ? (
+          <Link className="btn-primary" to="/warehouses/new">
+            New Warehouse
+          </Link>
+        ) : null}
+      </div>
       <ListFilters
         search={list.search}
         onSearch={list.setSearch}
         active={list.active}
         onActive={list.setActive}
-        action={
-          canAdd ? (
-            <Link className="btn-primary" to="/warehouses/new">
-              New warehouse
-            </Link>
-          ) : null
-        }
       />
       <QueryState
         isPending={query.isPending}

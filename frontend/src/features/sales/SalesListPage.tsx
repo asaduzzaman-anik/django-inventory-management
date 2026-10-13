@@ -49,7 +49,7 @@ export function SalesListPage() {
         <h1 className="page-title">Sales</h1>
         {canAdd ? (
           <Link className="btn-primary" to="/sales/new">
-            New sales order
+            New Sales Order
           </Link>
         ) : null}
       </div>

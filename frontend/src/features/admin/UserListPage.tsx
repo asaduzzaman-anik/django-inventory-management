@@ -49,7 +49,7 @@ export function UserListPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="page-title">Users</h1>
         <Link className="btn-primary" to="/admin/users/new">
-          New user
+          New User
         </Link>
       </div>
       <AdminNav />

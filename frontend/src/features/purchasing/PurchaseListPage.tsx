@@ -49,7 +49,7 @@ export function PurchaseListPage() {
         <h1 className="page-title">Purchasing</h1>
         {canAdd ? (
           <Link className="btn-primary" to="/purchasing/new">
-            New purchase order
+            New Purchase Order
           </Link>
         ) : null}
       </div>

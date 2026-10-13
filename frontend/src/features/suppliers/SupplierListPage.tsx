@@ -28,19 +28,19 @@ export function SupplierListPage() {
 
   return (
     <section>
-      <h1 className="mb-4 page-title">Suppliers</h1>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="page-title">Suppliers</h1>
+        {canAdd ? (
+          <Link className="btn-primary" to="/suppliers/new">
+            New Supplier
+          </Link>
+        ) : null}
+      </div>
       <ListFilters
         search={list.search}
         onSearch={list.setSearch}
         active={list.active}
         onActive={list.setActive}
-        action={
-          canAdd ? (
-            <Link className="btn-primary" to="/suppliers/new">
-              New supplier
-            </Link>
-          ) : null
-        }
       />
       <QueryState
         isPending={query.isPending}

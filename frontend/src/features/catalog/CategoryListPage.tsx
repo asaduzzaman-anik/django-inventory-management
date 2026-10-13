@@ -66,19 +66,19 @@ export function CategoryListPage() {
 
   return (
     <section>
-      <h1 className="mb-4 page-title">Categories</h1>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="page-title">Categories</h1>
+        {canAdd ? (
+          <Button type="button" onClick={() => setEditing("new")}>
+            New Category
+          </Button>
+        ) : null}
+      </div>
       <ListFilters
         search={list.search}
         onSearch={list.setSearch}
         active={list.active}
         onActive={list.setActive}
-        action={
-          canAdd ? (
-            <Button type="button" onClick={() => setEditing("new")}>
-              New category
-            </Button>
-          ) : null
-        }
       />
       <QueryState
         isPending={query.isPending}
