@@ -11,5 +11,6 @@ class AuditLogListView(ListAPIView):
     serializer_class = AuditLogSerializer
     queryset = AuditLog.objects.select_related("user")
     filterset_class = AuditLogFilter
+    search_fields = ["user__username", "entity_type", "entity_repr", "entity_id"]
     ordering_fields = ["created_at"]
     ordering = ["-created_at"]

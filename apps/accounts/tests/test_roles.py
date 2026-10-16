@@ -230,3 +230,22 @@ def test_login_and_user_changes_are_audited_without_passwords(api):
     assert logs.status_code == 200
     assert logs.json()["count"] == 2
     assert all(item["action"] == "LOGIN" for item in logs.json()["results"])
+
+
+@pytest.mark.django_db
+def test_audit_log_search_matches_user_entity_and_record(api):
+    call_command("seed_roles")
+    admin = User.objects.create_user(username="admin", email="admin@example.com", password=PASSWORD)
+    admin.groups.add(Group.objects.get(name="Super Admin"))
+    authenticate(api, admin)
+    AuditLog.objects.create(action=AuditLog.Action.CREATE, entity_type="catalog.Category", entity_repr="Electronics")
+    AuditLog.objects.create(action=AuditLog.Action.CREATE, entity_type="SalesOrder", entity_repr="SO-0001")
+
+    def records(term):
+        response = api.get("/api/v1/audit-logs/", {"search": term})
+        assert response.status_code == 200
+        return {item["entity_repr"] for item in response.json()["results"]}
+
+    assert records("electro") == {"Electronics"}
+    assert records("salesorder") == {"SO-0001"}
+    assert records("admin") == {"admin"}
