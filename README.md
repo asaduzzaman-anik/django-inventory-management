@@ -2,6 +2,45 @@
 
 Portfolio project for multi-warehouse inventory: stock balances, an immutable ledger, purchase and sales workflows, JWT roles, Celery alerts, reports, and a React admin UI.
 
+![Dashboard](docs/screenshots/01-dashboard.png)
+
+## Screenshots
+
+| Products | Product detail |
+| --- | --- |
+| ![Products](docs/screenshots/02-products.png) | ![Product detail](docs/screenshots/03-product-detail.png) |
+| **Stock levels** | **Transaction ledger** |
+| ![Stock levels](docs/screenshots/10-stock-levels.png) | ![Transaction ledger](docs/screenshots/11-transactions-ledger.png) |
+| **Purchase order** | **Sales order** |
+| ![Purchase order detail](docs/screenshots/16-purchase-order-detail.png) | ![Sales order detail](docs/screenshots/19-sales-order-detail.png) |
+| **Inventory report** | **Audit log** |
+| ![Inventory report](docs/screenshots/20-report-inventory.png) | ![Audit log](docs/screenshots/25-audit-logs.png) |
+
+<details>
+<summary>More screenshots</summary>
+
+| Sign in | New product |
+| --- | --- |
+| ![Sign in](docs/screenshots/00-login.png) | ![New product](docs/screenshots/04-product-form.png) |
+| **Categories** | **Suppliers** |
+| ![Categories](docs/screenshots/05-categories.png) | ![Suppliers](docs/screenshots/06-suppliers.png) |
+| **Supplier detail** | **Warehouses** |
+| ![Supplier detail](docs/screenshots/07-supplier-detail.png) | ![Warehouses](docs/screenshots/08-warehouses.png) |
+| **Warehouse detail** | **Receive stock** |
+| ![Warehouse detail](docs/screenshots/09-warehouse-detail.png) | ![Receive stock](docs/screenshots/12-receive-stock.png) |
+| **Transfer stock** | **Adjust stock** |
+| ![Transfer stock](docs/screenshots/13-transfer-stock.png) | ![Adjust stock](docs/screenshots/14-adjust-stock.png) |
+| **Purchase orders** | **New purchase order** |
+| ![Purchase orders](docs/screenshots/15-purchase-orders.png) | ![New purchase order](docs/screenshots/17-purchase-order-form.png) |
+| **Sales orders** | **Movement report** |
+| ![Sales orders](docs/screenshots/18-sales-orders.png) | ![Movement report](docs/screenshots/21-report-movements.png) |
+| **Purchase report** | **Sales report** |
+| ![Purchase report](docs/screenshots/22-report-purchases.png) | ![Sales report](docs/screenshots/23-report-sales.png) |
+| **Users** | **Profile** |
+| ![Users](docs/screenshots/24-users.png) | ![Profile](docs/screenshots/26-profile.png) |
+
+</details>
+
 ## Stack
 
 | Layer | Choice |
@@ -190,6 +229,7 @@ Set `DJANGO_SETTINGS_MODULE=config.settings.prod` in that environment.
 apps/           Django domains (accounts, inventory, purchasing, sales, …)
 config/         settings (dev / prod), WSGI, Celery
 frontend/       Vite React SPA
+docs/           README screenshots
 requirements/   base, dev, prod
 docker-compose.yml
 Dockerfile
