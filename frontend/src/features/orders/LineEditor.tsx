@@ -32,6 +32,8 @@ export function LineEditor({
         <div key={line.key} className="grid gap-3 rounded-lg border border-gray-200 bg-white shadow-theme-xs p-3 sm:grid-cols-2">
           <Select
             label="Product"
+            searchable
+            searchPlaceholder="Search by SKU or name"
             value={line.product}
             onChange={(event) => {
               const productId = event.target.value

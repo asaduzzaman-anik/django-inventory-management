@@ -79,7 +79,7 @@ export function ReceivePage() {
             </option>
           ))}
         </Select>
-        <Select label="Product" error={errors.product?.message} {...register("product")}>
+        <Select label="Product" searchable searchPlaceholder="Search by SKU or name" error={errors.product?.message} {...register("product")}>
           <option value="">Choose a product</option>
           {(products.data?.results ?? []).map((item) => (
             <option key={item.id} value={item.id}>

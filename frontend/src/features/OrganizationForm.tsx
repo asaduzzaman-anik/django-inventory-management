@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 import { Button } from "../components/ui/Button.tsx"
 import { Checkbox } from "../components/ui/Checkbox.tsx"
@@ -12,10 +13,12 @@ export function OrganizationForm({
   defaultValues,
   submitLabel,
   onSubmit,
+  codeOptional = false,
 }: {
   defaultValues?: OrganizationValues
   submitLabel: string
   onSubmit: (values: OrganizationValues) => Promise<void>
+  codeOptional?: boolean
 }) {
   const [banner, setBanner] = useState("")
   const {
@@ -24,7 +27,7 @@ export function OrganizationForm({
     setError,
     formState: { errors, isSubmitting },
   } = useForm<OrganizationValues>({
-    resolver: zodResolver(organizationSchema),
+    resolver: zodResolver(codeOptional ? organizationSchema.extend({ code: z.string().trim() }) : organizationSchema),
     defaultValues: defaultValues ?? emptyOrganization,
   })
 
@@ -44,7 +47,12 @@ export function OrganizationForm({
     >
       {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
       <Input label="Name" error={errors.name?.message} {...register("name")} />
-      <Input label="Code" error={errors.code?.message} {...register("code")} />
+      <Input
+        label="Code"
+        hint={codeOptional ? "Leave empty to auto generate" : undefined}
+        error={errors.code?.message}
+        {...register("code")}
+      />
       <Input label="Email" type="email" error={errors.email?.message} {...register("email")} />
       <Input label="Phone" error={errors.phone?.message} {...register("phone")} />
       <Input label="Contact name" error={errors.contact_name?.message} {...register("contact_name")} />

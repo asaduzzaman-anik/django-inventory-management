@@ -61,9 +61,9 @@ export function UserFormPage() {
       <h1 className="page-title">New user</h1>
       <AdminNav />
       {banner ? <p className="alert alert-danger text-sm">{banner}</p> : null}
-      <Input label="Username" value={username} error={errors.username} onChange={(event) => setUsername(event.target.value)} />
-      <Input label="Email" type="email" value={email} error={errors.email} onChange={(event) => setEmail(event.target.value)} />
-      <Input label="Password" type="password" value={password} error={errors.password} onChange={(event) => setPassword(event.target.value)} />
+      <Input label="Username" autoComplete="off" value={username} error={errors.username} onChange={(event) => setUsername(event.target.value)} />
+      <Input label="Email" type="email" autoComplete="off" value={email} error={errors.email} onChange={(event) => setEmail(event.target.value)} />
+      <Input label="Password" type="password" autoComplete="new-password" value={password} error={errors.password} onChange={(event) => setPassword(event.target.value)} />
       <Input label="First name" value={firstName} error={errors.first_name} onChange={(event) => setFirstName(event.target.value)} />
       <Input label="Last name" value={lastName} error={errors.last_name} onChange={(event) => setLastName(event.target.value)} />
       <Input label="Phone" value={phone} error={errors.phone} onChange={(event) => setPhone(event.target.value)} />
