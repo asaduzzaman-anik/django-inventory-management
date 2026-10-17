@@ -36,8 +36,12 @@ Portfolio project for multi-warehouse inventory: stock balances, an immutable le
 | ![Sales orders](docs/screenshots/18-sales-orders.png) | ![Movement report](docs/screenshots/21-report-movements.png) |
 | **Purchase report** | **Sales report** |
 | ![Purchase report](docs/screenshots/22-report-purchases.png) | ![Sales report](docs/screenshots/23-report-sales.png) |
-| **Users** | **Profile** |
-| ![Users](docs/screenshots/24-users.png) | ![Profile](docs/screenshots/26-profile.png) |
+| **New supplier** | **New sales order** |
+| ![New supplier](docs/screenshots/27-supplier-form.png) | ![New sales order](docs/screenshots/28-sales-order-form.png) |
+| **Users** | **New user** |
+| ![Users](docs/screenshots/24-users.png) | ![New user](docs/screenshots/29-user-form.png) |
+| **Profile** | |
+| ![Profile](docs/screenshots/26-profile.png) | |
 
 </details>
 
