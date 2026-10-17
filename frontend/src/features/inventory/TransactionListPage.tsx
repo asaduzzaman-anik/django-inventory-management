@@ -39,21 +39,23 @@ export function TransactionListPage() {
       </Link>
       <h1 className="mb-4 mt-2 page-title">Transaction history</h1>
       <div className="filter-toolbar">
-        <FilterDropdown
-          label="Type"
-          value={type}
-          onChange={chooseType}
-          options={TRANSACTION_TYPES.map(([value, label]) => ({ value, label }))}
-        />
-        <DateRangePicker
-          start={after}
-          end={before}
-          onChange={(nextStart, nextEnd) => {
-            setAfter(nextStart)
-            setBefore(nextEnd)
-            setPage(1)
-          }}
-        />
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+          <FilterDropdown
+            label="Type"
+            value={type}
+            onChange={chooseType}
+            options={TRANSACTION_TYPES.map(([value, label]) => ({ value, label }))}
+          />
+          <DateRangePicker
+            start={after}
+            end={before}
+            onChange={(nextStart, nextEnd) => {
+              setAfter(nextStart)
+              setBefore(nextEnd)
+              setPage(1)
+            }}
+          />
+      </div>
       </div>
       <QueryState
         isPending={query.isPending}
