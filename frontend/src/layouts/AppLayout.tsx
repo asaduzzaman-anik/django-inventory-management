@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { LuGithub, LuHeart } from "react-icons/lu"
+import { LuGithub, LuGlobe, LuHeart, LuLinkedin } from "react-icons/lu"
 import { MdMenuOpen } from "react-icons/md"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 
@@ -22,6 +22,12 @@ const ICONS: Record<string, string> = {
   "/reports": "M5 19V9M12 19V5M19 19v-7",
   "/admin": "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM5 21a7 7 0 0 1 14 0",
 }
+
+const FOOTER_LINKS = [
+  { label: "GitHub", href: "https://github.com/asaduzzaman-anik", Icon: LuGithub },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/anik-asaduzzaman/", Icon: LuLinkedin },
+  { label: "Portfolio", href: "https://asaduzzaman-anik.github.io/", Icon: LuGlobe },
+]
 
 export function AppLayout() {
   const { user, logout, setUser } = useAuth()
@@ -195,14 +201,28 @@ export function AppLayout() {
             <LuHeart className="text-rose-500" size={15} aria-hidden="true" />
             <span>by</span>
             <a
-              href="https://github.com/asaduzzaman-anik"
+              href="https://asaduzzaman-anik.github.io/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium text-gray-800 transition-colors hover:text-primary"
+              className="font-medium text-gray-800 transition-colors hover:text-primary"
             >
               Md Asaduzzaman Anik
-              <LuGithub size={16} aria-hidden="true" />
             </a>
+            <span className="inline-flex items-center gap-2.5 pl-1">
+              {FOOTER_LINKS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="text-gray-500 transition-colors hover:text-primary"
+                >
+                  <Icon size={16} aria-hidden="true" />
+                </a>
+              ))}
+            </span>
           </div>
         </footer>
       </div>
