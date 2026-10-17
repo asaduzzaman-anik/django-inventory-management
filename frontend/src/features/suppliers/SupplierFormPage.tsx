@@ -41,7 +41,7 @@ export function SupplierFormPage() {
         Back
       </Link>
       <h1 className="mt-2 mb-4 page-title">{supplierId ? "Edit supplier" : "New supplier"}</h1>
-      <OrganizationForm defaultValues={supplier.data} submitLabel="Save supplier" onSubmit={onSubmit} />
+      <OrganizationForm defaultValues={supplier.data} submitLabel="Save supplier" onSubmit={onSubmit} codeOptional={supplierId === null} />
     </section>
   )
 }

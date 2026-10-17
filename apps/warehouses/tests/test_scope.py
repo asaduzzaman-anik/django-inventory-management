@@ -76,6 +76,24 @@ def test_supplier_code_is_unique_and_managers_can_write(api):
 
 
 @pytest.mark.django_db
+def test_blank_supplier_code_is_generated_and_skips_taken_codes(api):
+    login_as(api, "Warehouse Manager", "manager")
+    first = api.post("/api/v1/suppliers/", {"name": "First", "code": ""}, format="json")
+    assert first.status_code == 201
+    assert first.json()["code"] == "SUP-001"
+
+    manual = api.post("/api/v1/suppliers/", {"name": "Manual", "code": "sup-002"}, format="json")
+    assert manual.json()["code"] == "SUP-002"
+
+    third = api.post("/api/v1/suppliers/", {"name": "Third"}, format="json")
+    assert third.status_code == 201
+    assert third.json()["code"] == "SUP-003"
+
+    cleared = api.patch(f"/api/v1/suppliers/{third.json()['id']}/", {"code": " "}, format="json")
+    assert cleared.status_code == 400
+
+
+@pytest.mark.django_db
 def test_warehouse_assignments_control_visibility(api):
     admin = login_as(api, "Super Admin", "admin")
     first = api.post("/api/v1/warehouses/", {"name": "Main", "code": "main"}, format="json")
