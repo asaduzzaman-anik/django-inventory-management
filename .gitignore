@@ -20,16 +20,16 @@ staticfiles/
 htmlcov/
 
 # Environment variables
+.env
 
 # Frontend
 frontend/node_modules/
 frontend/dist/
 
 # IDE
+.vscode/
 .idea/
 
 # OS
 .DS_Store
 Thumbs.db
-config.bat
-node_modules
